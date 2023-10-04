@@ -51,8 +51,29 @@ class NoMaterial(BaseMaterial):
             color = get_activation(self.cfg.color_activation)(color)
         return color
 
-    def export(self, features: Float[Tensor, "*N Nf"], **kwargs) -> Dict[str, Any]:
-        color = self(features, **kwargs).clamp(0, 1)
+    def export(self, features: Float[Tensor, "*N Nf"], guidance=None, **kwargs) -> Dict[str, Any]:
+        if guidance == None:
+            color = self(features, **kwargs).clamp(0, 1)
+        else:
+            color = torch.zeros_like(features[..., :3], device=features.device)
+            color_weights = torch.zeros((3*3, *features.shape[:2]), device=features.device)
+            meshgrid = [ i.to(features.device) for i in torch.meshgrid(torch.arange(512), torch.arange(512)) ]
+            for i in range(3):
+                for j in range(3):
+                    color_weights[i*3+j,i*256:i*256+512,j*256:j*256+512] += (512-1)/2 - torch.abs(meshgrid[0]-(512-1)/2) + 0.5
+                    color_weights[i*3+j,i*256:i*256+512,j*256:j*256+512] += (512-1)/2 - torch.abs(meshgrid[1]-(512-1)/2) + 0.5
+            color_weights = color_weights / color_weights.sum(0, keepdim=True)
+
+            for i in range(3):
+                for j in range(3):
+                    latents = F.interpolate(
+                        features[i*256:i*256+512, j*256:j*256+512].unsqueeze(0).permute(0, 3, 1, 2), (64, 64), mode="bilinear", align_corners=False
+                    )
+                    color[i*256:i*256+512, j*256:j*256+512] += guidance.decode_latents(
+                        latents,
+                        latent_height=64, latent_width=64,
+                    ).permute(0, 2, 3, 1).squeeze(0).clamp(0, 1) * color_weights[i*3+j, i*256:i*256+512, j*256:j*256+512].unsqueeze(-1)
+
         assert color.shape[-1] >= 3, "Output color must have at least 3 channels"
         if color.shape[-1] > 3:
             threestudio.warn(
