@@ -7,4 +7,4 @@ exit 0
 CUDA_VISIBLE_DEVICES=3 python3 tt3d_generate.py \
   --config configs/dreamfusion-sd.yaml \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
-  --train_steps=100
+  --train-steps=100
