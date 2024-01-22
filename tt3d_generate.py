@@ -63,7 +63,7 @@ def main(
 
         launch_script_main_fn(
             args=argparse.Namespace(**prompt_args),
-            extras=argparse.Namespace(**prompt_extra_args),
+            extras=prompt_extra_args,
         )
 
 
