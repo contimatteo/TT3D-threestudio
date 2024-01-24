@@ -2,6 +2,7 @@
 from typing import Optional, Tuple, List
 
 import argparse
+import os
 
 from copy import deepcopy
 from pathlib import Path
@@ -42,10 +43,21 @@ def _delete_unnecessary_ckpts(model_dirname: str, prompt: str) -> None:
     )
 
     ckpts_path = last_result_path.joinpath("ckpts")
-    assert ckpts_path.exists() and ckpts_path.is_dir()
+    assert ckpts_path.exists()
+    assert ckpts_path.is_dir()
+    ### "last.ckpt" is a symlink to the last checkpoint.
+    last_ckpt_path = last_result_path.joinpath("last.ckpt")
+    assert last_ckpt_path.exists()
+    assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
+
+    ckpts_names_to_keep = [
+        "last.ckpt",
+        Path(os.readlink(last_ckpt_path)).name,
+    ]
 
     for ckpt_path in ckpts_path.glob("*.ckpt"):
-        if ckpt_path.name == "last.ckpt":
+        # if ckpt_path.name == "last.ckpt":
+        if ckpt_path.name in ckpts_names_to_keep:
             continue
         ckpt_path.unlink()
 
