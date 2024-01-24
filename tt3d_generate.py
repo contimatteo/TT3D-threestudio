@@ -77,7 +77,7 @@ def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
         ]
-        generate(run_args=run_args, run_extra_args=run_extra_args)
+        run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
         _delete_unnecessary_ckpts(model_dirname=CONFIG_NAME, prompt=prompt)
 
     __step1_run()
@@ -86,7 +86,7 @@ def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
 ###
 
 
-def generate(run_args: dict, run_extra_args: List[str]) -> None:
+def run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     REQUIRED_ARGS = ["config", "gpu", "train", "export"]
     REQUIRED_EXTRA_ARGS = [
         'system.prompt_processor.prompt', 'trainer.max_steps'
