@@ -106,8 +106,9 @@ def main(
 
         if model == "dreamfusion-sd":
             _dreamfusionsd(prompt=prompt, train_steps=train_steps)
+            continue
 
-        raise NotImplementedError("Model not supported.")
+        raise Exception("Model is supported but still not implemented.")
 
 
 ###
