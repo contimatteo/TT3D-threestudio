@@ -17,7 +17,7 @@ _ = Utils.Cuda.init()
 ###
 
 
-def _build_default_args() -> Tuple[dict, list]:
+def _build_default_args(out_rootpath: Path) -> Tuple[dict, list]:
     default_args = {
         'gpu': '0',
         'train': True,
@@ -31,6 +31,7 @@ def _build_default_args() -> Tuple[dict, list]:
 
     default_extra_args = [
         'system.prompt_processor.spawn=false',
+        f"exp_root_dir={str(out_rootpath)}",
     ]
 
     return default_args, default_extra_args
@@ -65,18 +66,19 @@ def _delete_unnecessary_ckpts(model_dirname: str, prompt: str) -> None:
 ###
 
 
-def __dreamfusionsd(prompt: str, train_steps: int) -> None:
+def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
+    args_builder_fn = lambda: _build_default_args(out_rootpath=out_rootpath)
 
     def __step1_run() -> None:
-        run_args, run_extra_args = _build_default_args()
-        config_name = "dreamfusion-sd"
-        run_args["config"] = f"configs/{config_name}.yaml"
+        CONFIG_NAME = "dreamfusion-sd"
+        run_args, run_extra_args = args_builder_fn()
+        run_args["config"] = f"configs/{CONFIG_NAME}.yaml"
         run_extra_args += [
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
         ]
         generate(run_args=run_args, run_extra_args=run_extra_args)
-        _delete_unnecessary_ckpts(model_dirname=config_name, prompt=prompt)
+        _delete_unnecessary_ckpts(model_dirname=CONFIG_NAME, prompt=prompt)
 
     __step1_run()
 
@@ -108,11 +110,15 @@ def generate(run_args: dict, run_extra_args: List[str]) -> None:
 def main(
     model: str,
     prompt_filepath: Path,
+    out_rootpath: Path,
     train_steps: int,
 ):
     assert isinstance(model, str)
     assert len(model) > 0
     assert model in Utils.Configs.MODELS_SUPPORTED
+    assert isinstance(out_rootpath, Path)
+    assert out_rootpath.exists()
+    assert out_rootpath.is_dir()
     assert isinstance(train_steps, int)
     assert train_steps > 0
 
@@ -123,7 +129,11 @@ def main(
             continue
 
         if model == "dreamfusion-sd":
-            __dreamfusionsd(prompt=prompt, train_steps=train_steps)
+            __dreamfusionsd(
+                prompt=prompt,
+                out_rootpath=out_rootpath,
+                train_steps=train_steps,
+            )
             continue
 
         raise Exception("Model is supported but still not implemented.")
@@ -141,8 +151,7 @@ if __name__ == '__main__':
         required=True,
     )
     parser.add_argument('--prompt-file', type=Path, required=True)
-    # parser.add_argument('--out-path', type=Path, required=True)
-    # parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument('--out-path', type=Path, required=True)
     parser.add_argument("--train-steps", type=int, required=True)
 
     args = parser.parse_args()
@@ -152,5 +161,6 @@ if __name__ == '__main__':
     main(
         model=args.model,
         prompt_filepath=args.prompt_file,
+        out_rootpath=args.out_path,
         train_steps=args.train_steps,
     )
