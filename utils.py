@@ -102,7 +102,15 @@ class _Prompt():
 ###
 
 
+class _Configs():
+    MODELS_SUPPORTED: List[str] = ["dreamfusion-sd"]
+
+
+###
+
+
 class Utils():
 
+    Configs = _Configs
     Cuda = _Cuda
     Prompt = _Prompt
