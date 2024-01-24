@@ -35,7 +35,14 @@ def _build_default_args() -> Tuple[dict, list]:
     return default_args, default_extra_args
 
 
-def _dreamfusionsd(prompt: str, train_steps: int) -> None:
+def _locate_output_path(prompt: str) -> Path:
+    pass
+
+
+###
+
+
+def __dreamfusionsd(prompt: str, train_steps: int) -> None:
     ### STEP #1
     run_args, run_extra_args = _build_default_args()
     run_args["config"] = "configs/dreamfusion-sd.yaml"
@@ -81,23 +88,6 @@ def main(
     assert isinstance(train_steps, int)
     assert train_steps > 0
 
-    # default_args, default_extra_args = _build_default_args()
-    # prompts = Utils.Prompt.extract_from_file(filepath=prompt_filepath)
-    # for prompt in prompts:
-    #     prompt_args = deepcopy(default_args)
-    #     prompt_args["train"] = True
-    #     prompt_args["export"] = False
-    #     prompt_extra_args = deepcopy(default_extra_args)
-    #     prompt_extra_args += [
-    #         f"system.prompt_processor.prompt={prompt}",
-    #         f"trainer.max_steps={train_steps}",
-    #     ]
-    #     # launch_script_main_fn(
-    #     #     args=argparse.Namespace(**prompt_args),
-    #     #     extras=prompt_extra_args,
-    #     # )
-    #     _generate(prompt_args=prompt_args, prompt_extra_args=prompt_extra_args)
-
     prompts = Utils.Prompt.extract_from_file(filepath=prompt_filepath)
 
     for prompt in prompts:
@@ -105,7 +95,7 @@ def main(
             continue
 
         if model == "dreamfusion-sd":
-            _dreamfusionsd(prompt=prompt, train_steps=train_steps)
+            __dreamfusionsd(prompt=prompt, train_steps=train_steps)
             continue
 
         raise Exception("Model is supported but still not implemented.")
