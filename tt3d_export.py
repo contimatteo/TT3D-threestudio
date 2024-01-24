@@ -48,7 +48,7 @@ def _build_default_args(
 
 def _export(
     model: str,
-    out_result_path: Path,
+    result_path: Path,
     goal: Literal["quality", "speed", "tradeoff"],
 ) -> None:
     # 'config':'./outputs/dreamfusion-sd/a_shark@20240124-171111/configs/parsed.yaml',
@@ -56,9 +56,9 @@ def _export(
 
     run_args, run_extra_args = _build_default_args(goal=goal)
 
-    run_args["config"] = str(out_result_path.joinpath("configs/parsed.yaml"))
+    run_args["config"] = str(result_path.joinpath("configs/parsed.yaml"))
     run_extra_args += [
-        f"resume={str(out_result_path.joinpath('ckpts/last.ckpt'))}",
+        f"resume={str(result_path.joinpath('ckpts/last.ckpt'))}",
     ]
 
     run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
@@ -91,15 +91,15 @@ def run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
 
 def main(
     model: str,
-    out_rootpath: Path,
+    source_rootpath: Path,
     goal: Literal["quality", "speed", "tradeoff"],
 ):
     assert isinstance(model, str)
     assert len(model) > 0
     assert model in Utils.Configs.MODELS_SUPPORTED
-    assert isinstance(out_rootpath, Path)
-    assert out_rootpath.exists()
-    assert out_rootpath.is_dir()
+    assert isinstance(source_rootpath, Path)
+    assert source_rootpath.exists()
+    assert source_rootpath.is_dir()
     assert isinstance(goal, str)
     assert goal in ["quality", "speed", "tradeoff"]
 
@@ -111,15 +111,15 @@ def main(
 
     #
 
-    out_model_rootpath = out_rootpath.joinpath(out_model_dirname)
-    assert out_model_rootpath.exists()
-    assert out_model_rootpath.is_dir()
+    source_model_rootpath = source_rootpath.joinpath(out_model_dirname)
+    assert source_model_rootpath.exists()
+    assert source_model_rootpath.is_dir()
 
-    for out_result_path in out_model_rootpath.iterdir():
-        if not out_result_path.is_dir():
+    for result_path in source_model_rootpath.iterdir():
+        if not result_path.is_dir():
             continue
 
-        _export(model=model, out_result_path=out_result_path, goal=goal)
+        _export(model=model, result_path=result_path, goal=goal)
 
     # prompts = Utils.Prompt.extract_from_file(filepath=prompt_filepath)
     # for prompt in prompts:
