@@ -35,10 +35,6 @@ def _build_default_args() -> Tuple[dict, list]:
     return default_args, default_extra_args
 
 
-def _locate_output_path(prompt: str) -> Path:
-    pass
-
-
 ###
 
 

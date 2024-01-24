@@ -5,6 +5,7 @@ import os
 import torch
 
 from pathlib import Path
+from datetime import datetime
 
 ###
 
@@ -105,6 +106,106 @@ class _Prompt():
 class _Configs():
     MODELS_SUPPORTED: List[str] = ["dreamfusion-sd"]
 
+    # @classmethod
+    # def model_name_to_output_model_dir_name(cls, model: str) -> str:
+    #     """
+    #     In some cases the model name is different from the model output directory name.
+    #     """
+    #     assert isinstance(model, str)
+    #     assert len(model) > 0
+    #     assert model in cls.MODELS_SUPPORTED
+    #     if model == "dreamfusion-sd":
+    #         return "dreamfusion-sd"
+    #     raise NotImplementedError("Model name not supported.")
+
+
+class _Storage():
+
+    @staticmethod
+    def locate_last_result_output_path(
+        model_dirname: str,
+        prompt: str,
+    ) -> Path:
+        """
+        There may be multiple subdirs related to the same prompt.
+        This may be caused by multiple runs using the same prompt.
+        We want to find the most recent one.
+        Examples:
+        -  outputs/dreamfusion-sd/a_shark@20231217-110220
+        -  outputs/dreamfusion-sd/a_shark@20240124-120330
+        Moreover we may have multiple subdirs which have in common some parts of the same prompt.
+        Examples (sharing "a shark" prompt part):
+        -  outputs/dreamfusion-sd/a_shark@...
+        -  outputs/dreamfusion-sd/a_big_shark@...
+        -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
+        """
+
+        output_rootdir = Path("outputs")
+        output_modeldir = output_rootdir.joinpath(model_dirname)
+
+        assert output_modeldir.exists()
+        assert output_modeldir.is_dir()
+
+        #
+
+        ### first, try to collect all paths which refers EXACLTY to the {prompt}.
+        results_candidates_dirnames: List[str] = []
+
+        for result_path in output_modeldir.iterdir():
+            if not result_path.is_dir():
+                continue
+
+            prompt_enc = Utils.Prompt.encode(prompt=prompt)
+            result_dirname = result_path.name
+
+            ### {startswith} is not a sufficient condtion, but it's
+            ### a good start to filter out wrong results.
+            ### examples:
+            ###   -  outputs/dreamfusion-sd/a_shark@...
+            ###   -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
+            if not result_dirname.startswith(prompt_enc):
+                continue
+            ### ok now we are sure that the dirname starts with the prompt.
+            ### let's check if it's the exact prompt.
+            if result_dirname.split("@")[0] != prompt_enc:
+                continue
+
+            results_candidates_dirnames.append(result_dirname)
+
+        #
+
+        assert len(results_candidates_dirnames) > 0
+
+        ### Now we are sure that we have at least one result which refers to the exact prompt.
+        ### The issue now is that we may have multiple results which refers to the exact prompt
+        ### due to multiple runs with different timestamps.
+        ### We have to find the most recent one
+
+        last_result_datetime_obj: datetime = None
+        last_result_dirname: str = None
+
+        for result_dirname in results_candidates_dirnames:
+            if last_result_dirname is None:
+                last_result_dirname = result_dirname
+                continue
+
+            result_dirname_splits = result_dirname.split("@")
+            prompt_enc = result_dirname_splits[0]  ### "a_shark"
+            datetime_enc = result_dirname_splits[1]  ### "20231217-110220"
+            datetime_obj = datetime.strptime(datetime_enc, '%Y%m%d-%H%M%S')
+
+            if datetime_obj > last_result_datetime_obj:
+                last_result_datetime_obj = datetime_obj
+                last_result_dirname = result_dirname
+
+        assert last_result_dirname is not None
+
+        #
+
+        last_result_path = output_modeldir.joinpath(last_result_dirname)
+
+        return last_result_path
+
 
 ###
 
@@ -114,3 +215,4 @@ class Utils():
     Configs = _Configs
     Cuda = _Cuda
     Prompt = _Prompt
+    Storage = _Storage
