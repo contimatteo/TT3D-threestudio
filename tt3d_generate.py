@@ -37,16 +37,16 @@ def _build_default_args() -> Tuple[dict, list]:
 
 
 def _delete_unnecessary_ckpts(model_dirname: str, prompt: str) -> None:
-    last_result_path = Utils.Storage.locate_last_result_output_path(
+    result_path = Utils.Storage.locate_last_result_output_path(
         model_dirname=model_dirname,
         prompt=prompt,
     )
 
-    ckpts_path = last_result_path.joinpath("ckpts")
+    ckpts_path = result_path.joinpath("ckpts")
     assert ckpts_path.exists()
     assert ckpts_path.is_dir()
     ### "last.ckpt" is a symlink to the last checkpoint.
-    last_ckpt_path = last_result_path.joinpath("last.ckpt")
+    last_ckpt_path = ckpts_path.joinpath("last.ckpt")
     assert last_ckpt_path.exists()
     assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
 
