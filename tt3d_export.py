@@ -146,7 +146,6 @@ if __name__ == '__main__':
         choices=Utils.Configs.MODELS_SUPPORTED,
         required=True,
     )
-    parser.add_argument('--prompt-file', type=Path, required=True)
     parser.add_argument('--source-path', type=Path, required=True)
     parser.add_argument(
         "--goal",
