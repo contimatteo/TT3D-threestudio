@@ -181,28 +181,24 @@ class _Storage():
         ### due to multiple runs with different timestamps.
         ### We have to find the most recent one
 
-        last_result_datetime_obj: datetime = None
-        last_result_dirname: str = None
+        last_datetime_obj: datetime = None
+        last_dirname: str = None
 
         for result_dirname in results_candidates_dirnames:
-            if last_result_dirname is None:
-                last_result_dirname = result_dirname
-                continue
-
             result_dirname_splits = result_dirname.split("@")
             prompt_enc = result_dirname_splits[0]  ### "a_shark"
             datetime_enc = result_dirname_splits[1]  ### "20231217-110220"
             datetime_obj = datetime.strptime(datetime_enc, '%Y%m%d-%H%M%S')
 
-            if datetime_obj > last_result_datetime_obj:
-                last_result_datetime_obj = datetime_obj
-                last_result_dirname = result_dirname
+            if (last_dirname is None) or (datetime_obj > last_datetime_obj):
+                last_datetime_obj = datetime_obj
+                last_dirname = result_dirname
 
-        assert last_result_dirname is not None
+        assert last_dirname is not None
 
         #
 
-        last_result_path = output_modeldir.joinpath(last_result_dirname)
+        last_result_path = output_modeldir.joinpath(last_dirname)
 
         assert last_result_path.exists()
         assert last_result_path.is_dir()
