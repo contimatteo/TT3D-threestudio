@@ -204,6 +204,9 @@ class _Storage():
 
         last_result_path = output_modeldir.joinpath(last_result_dirname)
 
+        assert last_result_path.exists()
+        assert last_result_path.is_dir()
+
         return last_result_path
 
 

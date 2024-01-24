@@ -35,18 +35,38 @@ def _build_default_args() -> Tuple[dict, list]:
     return default_args, default_extra_args
 
 
+def _delete_unnecessary_ckpts(model_dirname: str, prompt: str) -> None:
+    last_result_path = Utils.Storage.locate_last_result_output_path(
+        model_dirname=model_dirname,
+        prompt=prompt,
+    )
+
+    ckpts_path = last_result_path.joinpath("ckpts")
+    assert ckpts_path.exists() and ckpts_path.is_dir()
+
+    for ckpt_path in ckpts_path.glob("*.ckpt"):
+        if ckpt_path.name == "last.ckpt":
+            continue
+        ckpt_path.unlink()
+
+
 ###
 
 
 def __dreamfusionsd(prompt: str, train_steps: int) -> None:
-    ### STEP #1
-    run_args, run_extra_args = _build_default_args()
-    run_args["config"] = "configs/dreamfusion-sd.yaml"
-    run_extra_args += [
-        f"system.prompt_processor.prompt={prompt}",
-        f"trainer.max_steps={train_steps}",
-    ]
-    generate(run_args=run_args, run_extra_args=run_extra_args)
+
+    def __step1_run() -> None:
+        run_args, run_extra_args = _build_default_args()
+        config_name = "dreamfusion-sd"
+        run_args["config"] = f"configs/{config_name}.yaml"
+        run_extra_args += [
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+        ]
+        generate(run_args=run_args, run_extra_args=run_extra_args)
+        _delete_unnecessary_ckpts(model_dirname=config_name, prompt=prompt)
+
+    __step1_run()
 
 
 ###
