@@ -34,6 +34,7 @@ def _build_default_args(
         "system.exporter_type=mesh-exporter",
         "system.exporter.context_type=cuda",
         "system.geometry.isosurface_threshold=auto"
+        ### TODO: ask to @andrea (for me it's ok without this option)
         # "system.exporter.fmt=obj",
     ]
 
