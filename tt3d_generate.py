@@ -38,12 +38,13 @@ def _build_default_args(out_rootpath: Path) -> Tuple[dict, list]:
     return default_args, default_extra_args
 
 
-def _delete_unnecessary_ckpts(model_dirname: str, prompt: str,
-                              out_rootpath: Path) -> None:
+def _delete_unnecessary_ckpts(
+    model_dirname: str,
+    prompt: str,
+    out_rootpath: Path,
+) -> None:
     # result_path = Utils.Storage.search_last_result_output_path_over_timestamps(
-    #     model_dirname=model_dirname,
-    #     prompt=prompt,
-    #     out_rootpath=out_rootpath,
+    #     model_dirname=model_dirname, prompt=prompt, out_rootpath=out_rootpath
     # )
     result_path = Utils.Storage.build_result_path_by_prompt(
         model_dirname=model_dirname,
