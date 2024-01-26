@@ -107,8 +107,10 @@ def main(
     out_model_dirname: str = None
     if model == "dreamfusion-sd":
         out_model_dirname = "dreamfusion-sd"
+    if model == "fantasia3d":
+        out_model_dirname = "fantasia3d"
     else:
-        raise Exception("Model is not supported or not implemented.")
+        raise Exception("Model output dirname not configured.")
 
     #
 
