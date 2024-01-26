@@ -127,7 +127,7 @@ def main(
     out_model_dirname: str = None
     if model == "dreamfusion-sd":
         out_model_dirname = "dreamfusion-sd"
-    if model == "fantasia3d":
+    elif model == "fantasia3d":
         out_model_dirname = "fantasia3d-texture"
     else:
         raise Exception("Model output dirname not configured.")
