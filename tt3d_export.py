@@ -33,7 +33,7 @@ def _build_default_args(
     default_extra_args = [
         "system.exporter_type=mesh-exporter",
         "system.exporter.context_type=cuda",
-        "system.geometry.isosurface_threshold=auto"
+        # "system.geometry.isosurface_threshold=auto"
         ### TODO: ask to @andrea (for me it's ok without this option)
         # "system.exporter.fmt=obj",
     ]
@@ -62,6 +62,15 @@ def _export(
         f"resume={str(result_path.joinpath('ckpts/last.ckpt'))}",
     ]
 
+    #
+
+    if model == "dreamfusion-sd":
+        run_extra_args += [
+            "system.geometry.isosurface_threshold=auto",
+        ]
+
+    #
+
     run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
 
 
@@ -71,8 +80,10 @@ def _export(
 def run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     REQUIRED_ARGS = ["config", "gpu", "train", "export"]
     REQUIRED_EXTRA_ARGS = [
-        "resume", "system.exporter_type", "system.exporter.context_type",
-        "system.geometry.isosurface_threshold"
+        "resume",
+        "system.exporter_type",
+        "system.exporter.context_type",
+        # "system.geometry.isosurface_threshold"
     ]
 
     assert isinstance(run_args, dict)
