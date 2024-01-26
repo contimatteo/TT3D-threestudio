@@ -89,10 +89,39 @@ def _build_default_args() -> Tuple[dict, list]:
 
 #     __step1_run()
 
+
+def _configure_and_run_model(
+    model: str,
+    prompt: str,
+    out_rootpath: Path,
+    train_steps: int,
+) -> None:
+
+    args_configs: List[Tuple[dict, list]] = None
+
+    if model == "dreamfusion-sd":
+        # __dreamfusionsd(
+        #     prompt=prompt, out_rootpath=out_rootpath, train_steps=train_steps,
+        # )
+        args_configs = Utils.Models.dreamfusionsd(
+            args_builder_fn=_build_default_args,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+        )
+
+    if args_configs is None:
+        raise Exception("Model is supported but still not implemented.")
+
+    for args_config in args_configs:
+        run_args, run_extra_args = args_config
+        __run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
+
+
 ###
 
 
-def run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
+def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     REQUIRED_ARGS = ["config", "gpu", "train", "export"]
     REQUIRED_EXTRA_ARGS = [
         'system.prompt_processor.prompt', 'trainer.max_steps'
@@ -134,25 +163,29 @@ def main(
         if not isinstance(prompt, str) or len(prompt) < 2:
             continue
 
-        args_configs: List[Tuple[dict, list]] = None
+        _configure_and_run_model(
+            model=model,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+        )
 
-        if model == "dreamfusion-sd":
-            # __dreamfusionsd(
-            #     prompt=prompt, out_rootpath=out_rootpath, train_steps=train_steps,
-            # )
-            args_configs = Utils.Models.dreamfusionsd(
-                args_builder_fn=_build_default_args,
-                prompt=prompt,
-                out_rootpath=out_rootpath,
-                train_steps=train_steps,
-            )
-
-        if args_configs is None:
-            raise Exception("Model is supported but still not implemented.")
-
-        for args_config in args_configs:
-            run_args, run_extra_args = args_config
-            run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
+        # args_configs: List[Tuple[dict, list]] = None
+        # if model == "dreamfusion-sd":
+        #     # __dreamfusionsd(
+        #     #     prompt=prompt, out_rootpath=out_rootpath, train_steps=train_steps,
+        #     # )
+        #     args_configs = Utils.Models.dreamfusionsd(
+        #         args_builder_fn=_build_default_args,
+        #         prompt=prompt,
+        #         out_rootpath=out_rootpath,
+        #         train_steps=train_steps,
+        #     )
+        # if args_configs is None:
+        #     raise Exception("Model is supported but still not implemented.")
+        # for args_config in args_configs:
+        #     run_args, run_extra_args = args_config
+        #     run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
 
 
 ###
