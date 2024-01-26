@@ -287,6 +287,10 @@ class _Models():
 
         args_configs.append((run_args, run_extra_args))
 
+        ###
+
+        return args_configs
+
 
 ###
 
