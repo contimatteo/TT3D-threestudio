@@ -114,14 +114,14 @@ def skip_generation_or_delete_existing_model_version(
     if out_result_final_path.exists():
         model_dirnames_to_delete = Utils.Storage.get_model_intermediate_dirnames_from_id(model=model)
         model_dirnames_to_delete += [out_model_final_dirname]
+        print("")
+        print("========================================")
         for model_dirname in model_dirnames_to_delete:
             _path_to_delete = build_result_path_fn(model_dirname)
-            print("")
-            print("========================================")
             print("Overwriting path -> ", _path_to_delete)
-            print("========================================")
-            print("")
             shutil.rmtree(_path_to_delete)
+        print("========================================")
+        print("")
 
     return False
 
