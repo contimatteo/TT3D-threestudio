@@ -287,14 +287,6 @@ class _Models():
 
         args_configs.append((run_args, run_extra_args))
 
-        ###
-
-        _Storage.delete_unnecessary_ckpts(
-            model_dirname=config_name,
-            prompt=prompt,
-            out_rootpath=out_rootpath,
-        )
-
 
 ###
 
