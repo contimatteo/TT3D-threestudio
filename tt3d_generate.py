@@ -100,10 +100,15 @@ def _configure_and_run_model(
     args_configs: List[Tuple[dict, list]] = None
 
     if model == "dreamfusion-sd":
-        # __dreamfusionsd(
-        #     prompt=prompt, out_rootpath=out_rootpath, train_steps=train_steps,
-        # )
         args_configs = Utils.Models.dreamfusionsd(
+            args_builder_fn=_build_default_args,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+        )
+
+    if model == "fantasia3d":
+        args_configs = Utils.Models.fantasia3d(
             args_builder_fn=_build_default_args,
             prompt=prompt,
             out_rootpath=out_rootpath,

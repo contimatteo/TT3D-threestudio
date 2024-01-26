@@ -104,7 +104,7 @@ class _Prompt():
 
 
 class _Configs():
-    MODELS_SUPPORTED: List[str] = ["dreamfusion-sd"]
+    MODELS_SUPPORTED: List[str] = ["dreamfusion-sd", "fantasia3d"]
 
     # @classmethod
     # def model_name_to_output_model_dir_name(cls, model: str) -> str:
@@ -269,20 +269,71 @@ class _Models():
     ) -> List[Tuple[dict, list]]:
 
         args_configs: List[Tuple[dict, list]] = []
-        config_name: str = None
 
         ###
         ### STEP #1
         ###
 
-        config_name = "dreamfusion-sd"
         run_args, run_extra_args = args_builder_fn()
 
-        run_args["config"] = f"configs/{config_name}.yaml"
+        run_args["config"] = "configs/dreamfusion-sd.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def fantasia3d(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: int,
+    ) -> List[Tuple[dict, list]]:
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/fantasia3d.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            "system.renderer.context_type=cuda",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        result_path = _Storage.build_result_path_by_prompt(
+            model_dirname="fantasia3d",
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+        )
+
+        ###
+        ### STEP #2
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/fantasia3d-texture.yaml"
+        run_extra_args += [
+            # f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
+            "system.renderer.context_type=cuda",
         ]
 
         args_configs.append((run_args, run_extra_args))
