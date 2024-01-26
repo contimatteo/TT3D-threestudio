@@ -98,7 +98,7 @@ def skip_generation_or_delete_existing_model_version(
     out_rootpath: Path,
 ) -> bool:
     build_result_path_fn = lambda modeldirname: Utils.Storage.build_result_path_by_prompt(
-        model_dirname=modeldirname, prompt=prompt, out_rootpath=out_rootpath)
+        model_dirname=modeldirname, prompt=prompt, out_rootpath=out_rootpath, assert_exists=False)
 
     out_model_final_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
     out_result_final_path = build_result_path_fn(out_model_final_dirname)
