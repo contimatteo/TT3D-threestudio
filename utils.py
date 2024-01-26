@@ -333,7 +333,7 @@ class _Models():
 
         run_args["config"] = "configs/fantasia3d-texture.yaml"
         run_extra_args += [
-            # f"exp_root_dir={str(out_rootpath)}",
+            f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
