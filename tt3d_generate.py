@@ -136,6 +136,15 @@ def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     for k in REQUIRED_EXTRA_ARGS:
         assert any((p.startswith(k) for p in run_extra_args))
 
+    print("")
+    print("")
+    print("========================================")
+    print(run_args)
+    print(run_extra_args)
+    print("========================================")
+    print("")
+    print("")
+
     launch_script_main_fn(
         args=argparse.Namespace(**run_args),
         extras=run_extra_args,
