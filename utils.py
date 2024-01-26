@@ -122,7 +122,25 @@ class _Configs():
 class _Storage():
 
     @staticmethod
-    def search_last_result_output_path_by_timestamp(
+    def build_result_path_by_prompt(
+        model_dirname: str,
+        prompt: str,
+        out_rootpath: Path,
+    ) -> Path:
+        assert "_" not in prompt
+
+        out_model_path = out_rootpath.joinpath(model_dirname)
+
+        prompt_enc = Utils.Prompt.encode(prompt=prompt)
+        out_model_prompt_path = out_model_path.joinpath(prompt_enc)
+
+        assert out_model_path.exists()
+        assert out_model_path.is_dir()
+
+        return out_model_prompt_path
+
+    @staticmethod
+    def search_last_result_output_path_over_timestamps(
         model_dirname: str,
         prompt: str,
         out_rootpath: Path,
@@ -142,17 +160,17 @@ class _Storage():
         """
 
         # output_rootdir = Path("outputs")
-        output_modeldir = out_rootpath.joinpath(model_dirname)
+        out_model_path = out_rootpath.joinpath(model_dirname)
 
-        assert output_modeldir.exists()
-        assert output_modeldir.is_dir()
+        assert out_model_path.exists()
+        assert out_model_path.is_dir()
 
         #
 
         ### first, try to collect all paths which refers EXACLTY to the {prompt}.
         results_candidates_dirnames: List[str] = []
 
-        for result_path in output_modeldir.iterdir():
+        for result_path in out_model_path.iterdir():
             if not result_path.is_dir():
                 continue
 
@@ -199,7 +217,7 @@ class _Storage():
 
         #
 
-        last_result_path = output_modeldir.joinpath(last_dirname)
+        last_result_path = out_model_path.joinpath(last_dirname)
 
         assert last_result_path.exists()
         assert last_result_path.is_dir()
