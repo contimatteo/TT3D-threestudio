@@ -1,5 +1,5 @@
 ### pylint: disable=missing-function-docstring,missing-class-docstring,missing-module-docstring,wrong-import-order
-from typing import Tuple, List
+from typing import Tuple, List, Callable
 
 import os
 import torch
@@ -224,6 +224,77 @@ class _Storage():
 
         return last_result_path
 
+    @staticmethod
+    def delete_unnecessary_ckpts(
+        model_dirname: str,
+        prompt: str,
+        out_rootpath: Path,
+    ) -> None:
+        result_path = Utils.Storage.build_result_path_by_prompt(
+            model_dirname=model_dirname,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+        )
+
+        ckpts_path = result_path.joinpath("ckpts")
+        assert ckpts_path.exists()
+        assert ckpts_path.is_dir()
+        ### "last.ckpt" is a symlink to the last checkpoint.
+        last_ckpt_path = ckpts_path.joinpath("last.ckpt")
+        assert last_ckpt_path.exists()
+        assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
+
+        ckpts_names_to_keep = [
+            "last.ckpt",
+            Path(os.readlink(last_ckpt_path)).name,
+        ]
+
+        for ckpt_path in ckpts_path.glob("*.ckpt"):
+            if ckpt_path.name in ckpts_names_to_keep:
+                continue
+            ckpt_path.unlink()
+
+
+###
+
+
+class _Models():
+
+    @staticmethod
+    def dreamfusionsd(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: int,
+    ) -> List[Tuple[dict, list]]:
+
+        args_configs: List[Tuple[dict, list]] = []
+        config_name: str = None
+
+        ###
+        ### STEP #1
+        ###
+
+        config_name = "dreamfusion-sd"
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = f"configs/{config_name}.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        _Storage.delete_unnecessary_ckpts(
+            model_dirname=config_name,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+        )
+
 
 ###
 
@@ -234,3 +305,4 @@ class Utils():
     Cuda = _Cuda
     Prompt = _Prompt
     Storage = _Storage
+    Models = _Models

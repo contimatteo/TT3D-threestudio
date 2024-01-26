@@ -37,60 +37,57 @@ def _build_default_args() -> Tuple[dict, list]:
     return default_args, default_extra_args
 
 
-def _delete_unnecessary_ckpts(
-    model_dirname: str,
-    prompt: str,
-    out_rootpath: Path,
-) -> None:
-    result_path = Utils.Storage.build_result_path_by_prompt(
-        model_dirname=model_dirname,
-        prompt=prompt,
-        out_rootpath=out_rootpath,
-    )
+# def _delete_unnecessary_ckpts(
+#     model_dirname: str,
+#     prompt: str,
+#     out_rootpath: Path,
+# ) -> None:
+#     result_path = Utils.Storage.build_result_path_by_prompt(
+#         model_dirname=model_dirname,
+#         prompt=prompt,
+#         out_rootpath=out_rootpath,
+#     )
 
-    ckpts_path = result_path.joinpath("ckpts")
-    assert ckpts_path.exists()
-    assert ckpts_path.is_dir()
-    ### "last.ckpt" is a symlink to the last checkpoint.
-    last_ckpt_path = ckpts_path.joinpath("last.ckpt")
-    assert last_ckpt_path.exists()
-    assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
+#     ckpts_path = result_path.joinpath("ckpts")
+#     assert ckpts_path.exists()
+#     assert ckpts_path.is_dir()
+#     ### "last.ckpt" is a symlink to the last checkpoint.
+#     last_ckpt_path = ckpts_path.joinpath("last.ckpt")
+#     assert last_ckpt_path.exists()
+#     assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
 
-    ckpts_names_to_keep = [
-        "last.ckpt",
-        Path(os.readlink(last_ckpt_path)).name,
-    ]
+#     ckpts_names_to_keep = [
+#         "last.ckpt",
+#         Path(os.readlink(last_ckpt_path)).name,
+#     ]
 
-    for ckpt_path in ckpts_path.glob("*.ckpt"):
-        if ckpt_path.name in ckpts_names_to_keep:
-            continue
-        ckpt_path.unlink()
-
+#     for ckpt_path in ckpts_path.glob("*.ckpt"):
+#         if ckpt_path.name in ckpts_names_to_keep:
+#             continue
+#         ckpt_path.unlink()
 
 ###
 
+# def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
+#     args_builder_fn = lambda: _build_default_args()
 
-def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
-    args_builder_fn = lambda: _build_default_args()
+#     def __step1_run() -> None:
+#         CONFIG_NAME = "dreamfusion-sd"
+#         run_args, run_extra_args = args_builder_fn()
+#         run_args["config"] = f"configs/{CONFIG_NAME}.yaml"
+#         run_extra_args += [
+#             f"exp_root_dir={str(out_rootpath)}",
+#             f"system.prompt_processor.prompt={prompt}",
+#             f"trainer.max_steps={train_steps}",
+#         ]
+#         run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
+#         _delete_unnecessary_ckpts(
+#             model_dirname=CONFIG_NAME,
+#             prompt=prompt,
+#             out_rootpath=out_rootpath,
+#         )
 
-    def __step1_run() -> None:
-        CONFIG_NAME = "dreamfusion-sd"
-        run_args, run_extra_args = args_builder_fn()
-        run_args["config"] = f"configs/{CONFIG_NAME}.yaml"
-        run_extra_args += [
-            f"exp_root_dir={str(out_rootpath)}",
-            f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
-        ]
-        run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
-        _delete_unnecessary_ckpts(
-            model_dirname=CONFIG_NAME,
-            prompt=prompt,
-            out_rootpath=out_rootpath,
-        )
-
-    __step1_run()
-
+#     __step1_run()
 
 ###
 
@@ -137,15 +134,25 @@ def main(
         if not isinstance(prompt, str) or len(prompt) < 2:
             continue
 
+        args_configs: List[Tuple[dict, list]] = None
+
         if model == "dreamfusion-sd":
-            __dreamfusionsd(
+            # __dreamfusionsd(
+            #     prompt=prompt, out_rootpath=out_rootpath, train_steps=train_steps,
+            # )
+            args_configs = Utils.Models.dreamfusionsd(
+                args_builder_fn=_build_default_args,
                 prompt=prompt,
                 out_rootpath=out_rootpath,
                 train_steps=train_steps,
             )
-            continue
 
-        raise Exception("Model is supported but still not implemented.")
+        if args_configs is None:
+            raise Exception("Model is supported but still not implemented.")
+
+        for args_config in args_configs:
+            run_args, run_extra_args = args_config
+            run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
 
 
 ###
