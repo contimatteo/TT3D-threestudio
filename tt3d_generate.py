@@ -3,6 +3,7 @@ from typing import Optional, Tuple, List
 
 import argparse
 import os
+import shutil
 
 from copy import deepcopy
 from pathlib import Path
@@ -90,13 +91,31 @@ def _build_default_args() -> Tuple[dict, list]:
 #     __step1_run()
 
 
-def _configure_and_run_model(
+def skip_generation_or_delete_existing_model_version(
+    skip_existing: bool,
     model: str,
     prompt: str,
     out_rootpath: Path,
-    train_steps: int,
-) -> None:
+) -> bool:
+    build_result_path_fn = lambda modeldirname: Utils.Storage.build_result_path_by_prompt(
+        model_dirname=modeldirname, prompt=prompt, out_rootpath=out_rootpath)
 
+    out_model_final_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
+    out_result_final_path = build_result_path_fn(out_model_final_dirname)
+
+    if skip_existing and out_result_final_path.exists():
+        return True
+
+    if out_result_final_path.exists():
+        model_dirnames_to_delete = Utils.Storage.get_model_intermediate_dirnames_from_id(model=model)
+        model_dirnames_to_delete += [out_model_final_dirname]
+        for model_dirname in model_dirnames_to_delete:
+            shutil.rmtree(build_result_path_fn(model_dirname))
+
+    return False
+
+
+def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_steps: int) -> None:
     args_configs: List[Tuple[dict, list]] = None
 
     if model == "dreamfusion-sd":
@@ -128,9 +147,7 @@ def _configure_and_run_model(
 
 def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     REQUIRED_ARGS = ["config", "gpu", "train", "export"]
-    REQUIRED_EXTRA_ARGS = [
-        'system.prompt_processor.prompt', 'trainer.max_steps'
-    ]
+    REQUIRED_EXTRA_ARGS = ['system.prompt_processor.prompt', 'trainer.max_steps']
 
     assert isinstance(run_args, dict)
     assert isinstance(run_extra_args, list)
@@ -156,12 +173,7 @@ def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     )
 
 
-def main(
-    model: str,
-    prompt_filepath: Path,
-    out_rootpath: Path,
-    train_steps: int,
-):
+def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: int, skip_existing: bool):
     assert isinstance(model, str)
     assert len(model) > 0
     assert model in Utils.Configs.MODELS_SUPPORTED
@@ -170,11 +182,22 @@ def main(
     assert out_rootpath.is_dir()
     assert isinstance(train_steps, int)
     assert train_steps > 0
+    assert isinstance(skip_existing, bool)
 
     prompts = Utils.Prompt.extract_from_file(filepath=prompt_filepath)
 
     for prompt in prompts:
         if not isinstance(prompt, str) or len(prompt) < 2:
+            continue
+
+        skip_generation = skip_generation_or_delete_existing_model_version(
+            skip_existing=skip_existing,
+            model=model,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+        )
+
+        if skip_generation:
             continue
 
         _configure_and_run_model(
@@ -216,6 +239,7 @@ if __name__ == '__main__':
     parser.add_argument('--prompt-file', type=Path, required=True)
     parser.add_argument('--out-path', type=Path, required=True)
     parser.add_argument("--train-steps", type=int, required=True)
+    parser.add_argument("--skip-existing", action="store_true", default=False)
 
     args = parser.parse_args()
 
@@ -226,4 +250,5 @@ if __name__ == '__main__':
         prompt_filepath=args.prompt_file,
         out_rootpath=args.out_path,
         train_steps=args.train_steps,
+        skip_existing=args.skip_existing,
     )

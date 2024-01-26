@@ -17,8 +17,7 @@ _ = Utils.Cuda.init()
 ###
 
 
-def _build_default_args(
-        goal: Literal["quality", "speed", "tradeoff"]) -> Tuple[dict, list]:
+def _build_default_args(goal: Literal["quality", "speed", "tradeoff"]) -> Tuple[dict, list]:
     default_args = {
         'gpu': '0',
         'train': False,
@@ -124,13 +123,14 @@ def main(
     assert isinstance(goal, str)
     assert goal in ["quality", "speed", "tradeoff"]
 
-    out_model_dirname: str = None
-    if model == "dreamfusion-sd":
-        out_model_dirname = "dreamfusion-sd"
-    elif model == "fantasia3d":
-        out_model_dirname = "fantasia3d-texture"
-    else:
-        raise Exception("Model output dirname not configured.")
+    # out_model_dirname: str = None
+    # if model == "dreamfusion-sd":
+    #     out_model_dirname = "dreamfusion-sd"
+    # elif model == "fantasia3d":
+    #     out_model_dirname = "fantasia3d-texture"
+    # else:
+    #     raise Exception("Model output dirname not configured.")
+    out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
 
     #
 

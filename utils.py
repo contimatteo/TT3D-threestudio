@@ -257,6 +257,34 @@ class _Storage():
                 continue
             ckpt_path.unlink()
 
+    @staticmethod
+    def get_model_final_dirname_from_id(model: str) -> str:
+        assert isinstance(model, str)
+        assert len(model) > 0
+        assert model in Utils.Configs.MODELS_SUPPORTED
+
+        if model == "dreamfusion-sd":
+            return "dreamfusion-sd"
+
+        if model == "fantasia3d":
+            return "fantasia3d-texture"
+
+        raise Exception("Model output final dirname not configured.")
+
+    @staticmethod
+    def get_model_intermediate_dirnames_from_id(model: str) -> List[str]:
+        assert isinstance(model, str)
+        assert len(model) > 0
+        assert model in Utils.Configs.MODELS_SUPPORTED
+
+        if model == "dreamfusion-sd":
+            return []
+
+        if model == "fantasia3d":
+            return ["fantasia3d"]
+
+        raise Exception("Model output intermediate dirnames not configured.")
+
 
 ###
 
