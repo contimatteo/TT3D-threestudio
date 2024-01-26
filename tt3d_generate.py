@@ -17,7 +17,7 @@ _ = Utils.Cuda.init()
 ###
 
 
-def _build_default_args(out_rootpath: Path) -> Tuple[dict, list]:
+def _build_default_args() -> Tuple[dict, list]:
     default_args = {
         "gpu": "0",
         "train": True,
@@ -31,7 +31,6 @@ def _build_default_args(out_rootpath: Path) -> Tuple[dict, list]:
 
     default_extra_args = [
         "use_timestamp=False",
-        f"exp_root_dir={str(out_rootpath)}",
         "system.prompt_processor.spawn=false",
     ]
 
@@ -72,13 +71,14 @@ def _delete_unnecessary_ckpts(
 
 
 def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
-    args_builder_fn = lambda: _build_default_args(out_rootpath=out_rootpath)
+    args_builder_fn = lambda: _build_default_args()
 
     def __step1_run() -> None:
         CONFIG_NAME = "dreamfusion-sd"
         run_args, run_extra_args = args_builder_fn()
         run_args["config"] = f"configs/{CONFIG_NAME}.yaml"
         run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
         ]
