@@ -122,9 +122,10 @@ class _Configs():
 class _Storage():
 
     @staticmethod
-    def locate_last_result_output_path(
+    def search_last_result_output_path_by_timestamp(
         model_dirname: str,
         prompt: str,
+        out_rootpath: Path,
     ) -> Path:
         """
         There may be multiple subdirs related to the same prompt.
@@ -140,8 +141,8 @@ class _Storage():
         -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
         """
 
-        output_rootdir = Path("outputs")
-        output_modeldir = output_rootdir.joinpath(model_dirname)
+        # output_rootdir = Path("outputs")
+        output_modeldir = out_rootpath.joinpath(model_dirname)
 
         assert output_modeldir.exists()
         assert output_modeldir.is_dir()

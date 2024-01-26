@@ -19,28 +19,31 @@ _ = Utils.Cuda.init()
 
 def _build_default_args(out_rootpath: Path) -> Tuple[dict, list]:
     default_args = {
-        'gpu': '0',
-        'train': True,
-        'validate': False,
-        'test': False,
-        'export': False,
-        'gradio': False,
-        'verbose': False,
-        'typecheck': False,
+        "gpu": "0",
+        "train": True,
+        "validate": False,
+        "test": False,
+        "export": False,
+        "gradio": False,
+        "verbose": False,
+        "typecheck": False,
     }
 
     default_extra_args = [
-        'system.prompt_processor.spawn=false',
+        # "use_timestamp=False",
         f"exp_root_dir={str(out_rootpath)}",
+        "system.prompt_processor.spawn=false",
     ]
 
     return default_args, default_extra_args
 
 
-def _delete_unnecessary_ckpts(model_dirname: str, prompt: str) -> None:
-    result_path = Utils.Storage.locate_last_result_output_path(
+def _delete_unnecessary_ckpts(model_dirname: str, prompt: str,
+                              out_rootpath: Path) -> None:
+    result_path = Utils.Storage.search_last_result_output_path_by_timestamp(
         model_dirname=model_dirname,
         prompt=prompt,
+        out_rootpath=out_rootpath,
     )
 
     ckpts_path = result_path.joinpath("ckpts")
@@ -78,7 +81,11 @@ def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
             f"trainer.max_steps={train_steps}",
         ]
         run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
-        _delete_unnecessary_ckpts(model_dirname=CONFIG_NAME, prompt=prompt)
+        _delete_unnecessary_ckpts(
+            model_dirname=CONFIG_NAME,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+        )
 
     __step1_run()
 
