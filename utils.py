@@ -126,6 +126,7 @@ class _Storage():
         model_dirname: str,
         prompt: str,
         out_rootpath: Path,
+        assert_exists: bool,
     ) -> Path:
         assert "_" not in prompt
 
@@ -134,8 +135,9 @@ class _Storage():
         prompt_enc = Utils.Prompt.encode(prompt=prompt)
         out_model_prompt_path = out_model_path.joinpath(prompt_enc)
 
-        assert out_model_path.exists()
-        assert out_model_path.is_dir()
+        if assert_exists:
+            assert out_model_path.exists()
+            assert out_model_path.is_dir()
 
         return out_model_prompt_path
 
@@ -234,6 +236,7 @@ class _Storage():
             model_dirname=model_dirname,
             prompt=prompt,
             out_rootpath=out_rootpath,
+            assert_exists=True,
         )
 
         ckpts_path = result_path.joinpath("ckpts")
@@ -319,6 +322,7 @@ class _Models():
             model_dirname="fantasia3d",
             prompt=prompt,
             out_rootpath=out_rootpath,
+            assert_exists=False,
         )
 
         ###
