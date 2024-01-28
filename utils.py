@@ -434,6 +434,7 @@ class _Models():
             f"trainer.max_steps={train_steps}",
             "system.renderer.context_type=cuda",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
+            "system.geometry_convert_override.isosurface_threshold=auto",
         ]
 
         args_configs.append((run_args, run_extra_args))
