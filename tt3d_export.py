@@ -51,9 +51,6 @@ def _export(
     result_path: Path,
     goal: Literal["quality", "speed", "tradeoff"],
 ) -> None:
-    # 'config':'./outputs/dreamfusion-sd/a_shark@20240124-171111/configs/parsed.yaml',
-    # 'resume=./outputs/dreamfusion-sd/a_shark@20240124-171111/ckpts/last.ckpt',
-
     run_args, run_extra_args = _build_default_args(goal=goal)
 
     run_args["config"] = str(result_path.joinpath("configs/parsed.yaml"))
@@ -68,6 +65,18 @@ def _export(
             "system.geometry.isosurface_threshold=auto",
         ]
 
+    elif model == "fantasia3d":
+        pass
+
+    elif model == "prolificdreamer":
+        run_extra_args += [
+            "system.geometry.isosurface_threshold=auto",
+        ]
+
+    else:
+        ### just for safety ...
+        raise Exception("Model custom run arguments not configured.")
+
     #
 
     run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
@@ -78,12 +87,7 @@ def _export(
 
 def run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     REQUIRED_ARGS = ["config", "gpu", "train", "export"]
-    REQUIRED_EXTRA_ARGS = [
-        "resume",
-        "system.exporter_type",
-        "system.exporter.context_type",
-        # "system.geometry.isosurface_threshold"
-    ]
+    REQUIRED_EXTRA_ARGS = ["resume", "system.exporter_type", "system.exporter.context_type"]
 
     assert isinstance(run_args, dict)
     assert isinstance(run_extra_args, list)
@@ -123,18 +127,9 @@ def main(
     assert isinstance(goal, str)
     assert goal in ["quality", "speed", "tradeoff"]
 
-    # out_model_dirname: str = None
-    # if model == "dreamfusion-sd":
-    #     out_model_dirname = "dreamfusion-sd"
-    # elif model == "fantasia3d":
-    #     out_model_dirname = "fantasia3d-texture"
-    # else:
-    #     raise Exception("Model output dirname not configured.")
     out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
-
-    #
-
     source_model_rootpath = source_rootpath.joinpath(out_model_dirname)
+
     assert source_model_rootpath.exists()
     assert source_model_rootpath.is_dir()
 
@@ -143,19 +138,6 @@ def main(
             continue
 
         _export(model=model, result_path=result_path, goal=goal)
-
-    # prompts = Utils.Prompt.extract_from_file(filepath=prompt_filepath)
-    # for prompt in prompts:
-    #     if not isinstance(prompt, str) or len(prompt) < 2:
-    #         continue
-    #     if model == "dreamfusion-sd":
-    #         __dreamfusionsd(
-    #             prompt=prompt,
-    #             out_rootpath=out_rootpath,
-    #             train_steps=train_steps,
-    #         )
-    #         continue
-    #     raise Exception("Model is supported but still not implemented.")
 
 
 ###
