@@ -64,15 +64,10 @@ def _export(
         run_extra_args += [
             "system.geometry.isosurface_threshold=auto",
         ]
-
     elif model == "fantasia3d":
         pass
-
     elif model == "prolificdreamer":
-        run_extra_args += [
-            "system.geometry.isosurface_threshold=auto",
-        ]
-
+        pass
     else:
         ### just for safety ...
         raise Exception("Model custom run arguments not configured.")
