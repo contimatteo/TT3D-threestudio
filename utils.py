@@ -104,7 +104,11 @@ class _Prompt():
 
 
 class _Configs():
-    MODELS_SUPPORTED: List[str] = ["dreamfusion-sd", "fantasia3d"]
+    MODELS_SUPPORTED: List[str] = [
+        "dreamfusion-sd",
+        "fantasia3d",
+        "prolificdreamer",
+    ]
 
     # @classmethod
     # def model_name_to_output_model_dir_name(cls, model: str) -> str:
@@ -269,6 +273,9 @@ class _Storage():
         if model == "fantasia3d":
             return "fantasia3d-texture"
 
+        if model == "prolificdreamer":
+            return "prolificdreamer-texture"
+
         raise Exception("Model output final dirname not configured.")
 
     @staticmethod
@@ -282,6 +289,9 @@ class _Storage():
 
         if model == "fantasia3d":
             return ["fantasia3d"]
+
+        if model == "prolificdreamer":
+            return ["prolificdreamer", "prolificdreamer-geometry"]
 
         raise Exception("Model output intermediate dirnames not configured.")
 
@@ -366,6 +376,88 @@ class _Models():
             f"trainer.max_steps={train_steps}",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
             "system.renderer.context_type=cuda",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def prolificdreamer(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: int,
+    ) -> List[Tuple[dict, list]]:
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/prolificdreamer.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            # "system.renderer.context_type=cuda",
+            "data.width=64",  ### TODO: prefers memory optimization over quality
+            "data.height=64",  ### TODO: prefers memory optimization over quality
+            "data.batch_size=1",  ### TODO: prefers memory optimization over quality
+            # "system.guidance.pretrained_model_name_or_path_lora='stabilityai/stable-diffusion-2-1-base'",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        result_path = _Storage.build_result_path_by_prompt(
+            model_dirname="prolificdreamer",
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            assert_exists=False,
+        )
+
+        ###
+        ### STEP #2
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/prolificdreamer-geometry.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            "system.renderer.context_type=cuda",
+            f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        result_path = _Storage.build_result_path_by_prompt(
+            model_dirname="prolificdreamer-geometry",
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            assert_exists=False,
+        )
+
+        ###
+        ### STEP #3
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/prolificdreamer-texture.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            "system.renderer.context_type=cuda",
+            f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
         ]
 
         args_configs.append((run_args, run_extra_args))
