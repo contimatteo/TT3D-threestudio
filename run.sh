@@ -75,3 +75,18 @@ CUDA_VISIBLE_DEVICES=3 python3 tt3d_generate.py \
 CUDA_VISIBLE_DEVICES=3 python3 tt3d_export.py \
   --model "textmesh" \
   --source-path /media/data2/mconti/TT3D/models/Threestudio-TextMesh/outputs
+
+
+### 
+### HIFA
+### 
+
+CUDA_VISIBLE_DEVICES=3 python3 tt3d_generate.py \
+  --model "hifa" \
+  --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
+  --out-path /media/data2/mconti/TT3D/models/Threestudio-HiFA/outputs \
+  --train-steps=100
+
+CUDA_VISIBLE_DEVICES=3 python3 tt3d_export.py \
+  --model "hifa" \
+  --source-path /media/data2/mconti/TT3D/models/Threestudio-HiFA/outputs
