@@ -62,7 +62,7 @@ def _export(
 
     if model == "dreamfusion-sd":
         run_extra_args += [
-            # "system.geometry.isosurface_threshold=auto",
+            "system.geometry.isosurface_threshold=auto",
             "system.geometry.isosurface_method=mc-cpu",
             "system.geometry.isosurface_resolution=256",
         ]
