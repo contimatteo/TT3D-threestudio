@@ -592,7 +592,6 @@ class _Models():
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
-            "system.renderer.context_type=cuda",
         ]
 
         args_configs.append((run_args, run_extra_args))
