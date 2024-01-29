@@ -70,6 +70,8 @@ def _export(
         pass
     elif model == "magic3d":
         pass
+    elif model == "textmesh":
+        pass
     else:
         ### just for safety ...
         raise Exception("Model custom run arguments not configured.")

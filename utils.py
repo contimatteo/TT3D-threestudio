@@ -109,6 +109,7 @@ class _Configs():
         "fantasia3d",
         "prolificdreamer",
         "magic3d",
+        "textmesh",
     ]
 
     # @classmethod
@@ -280,6 +281,9 @@ class _Storage():
         if model == "magic3d":
             return "magic3d-refine-sd"
 
+        if model == "textmesh":
+            return "textmesh-sd"
+
         raise Exception("Model output final dirname not configured.")
 
     @staticmethod
@@ -299,6 +303,9 @@ class _Storage():
 
         if model == "magic3d":
             return ["magic3d-coarse-sd"]
+
+        if model == "textmesh":
+            return []
 
         raise Exception("Model output intermediate dirnames not configured.")
 
@@ -519,6 +526,35 @@ class _Models():
             f"trainer.max_steps={train_steps}",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
             "system.renderer.context_type=cuda",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def textmesh(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: int,
+    ) -> List[Tuple[dict, list]]:
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/textmesh-sd.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
         ]
 
         args_configs.append((run_args, run_extra_args))
