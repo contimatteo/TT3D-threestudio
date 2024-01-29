@@ -72,6 +72,10 @@ def _export(
         pass
     elif model == "textmesh":
         pass
+    elif model == "hifa":
+        run_extra_args += [
+            "system.geometry.isosurface_threshold=auto",
+        ]
     else:
         ### just for safety ...
         raise Exception("Model custom run arguments not configured.")

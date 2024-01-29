@@ -169,6 +169,14 @@ def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_
             train_steps=train_steps,
         )
 
+    if model == "hifa":
+        args_configs = Utils.Models.hifa(
+            args_builder_fn=_build_default_args,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+        )
+
     if args_configs is None:
         raise Exception("Model is supported but still not implemented.")
 

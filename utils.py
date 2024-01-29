@@ -110,6 +110,7 @@ class _Configs():
         "prolificdreamer",
         "magic3d",
         "textmesh",
+        "hifa",
     ]
 
     # @classmethod
@@ -284,6 +285,9 @@ class _Storage():
         if model == "textmesh":
             return "textmesh-sd"
 
+        if model == "hifa":
+            return "hifa"
+
         raise Exception("Model output final dirname not configured.")
 
     @staticmethod
@@ -305,6 +309,9 @@ class _Storage():
             return ["magic3d-coarse-sd"]
 
         if model == "textmesh":
+            return []
+
+        if model == "hifa":
             return []
 
         raise Exception("Model output intermediate dirnames not configured.")
@@ -555,6 +562,37 @@ class _Models():
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def hifa(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: int,
+    ) -> List[Tuple[dict, list]]:
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/hifa.yaml"
+        # run_args["config"] = "configs/experimental/unified-guidance/hifa.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            "system.renderer.context_type=cuda",
         ]
 
         args_configs.append((run_args, run_extra_args))
