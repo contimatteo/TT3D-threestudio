@@ -126,7 +126,7 @@ def skip_generation_or_delete_existing_model_version(
     return False
 
 
-def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_steps: int) -> None:
+def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_steps: List[int]) -> None:
     args_configs: List[Tuple[dict, list]] = None
 
     if model == "dreamfusion-sd":
@@ -216,15 +216,16 @@ def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     )
 
 
-def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: int, skip_existing: bool):
+def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: List[int], skip_existing: bool):
     assert isinstance(model, str)
     assert len(model) > 0
     assert model in Utils.Configs.MODELS_SUPPORTED
     assert isinstance(out_rootpath, Path)
     # assert out_rootpath.exists()
     # assert out_rootpath.is_dir()
-    assert isinstance(train_steps, int)
-    assert train_steps > 0
+    assert isinstance(train_steps, list)
+    assert all((isinstance(step, int) for step in train_steps))
+    assert all((0 <= step <= 10000 for step in train_steps))
     assert isinstance(skip_existing, bool)
 
     if out_rootpath.exists():
@@ -271,11 +272,17 @@ if __name__ == '__main__':
     )
     parser.add_argument('--prompt-file', type=Path, required=True)
     parser.add_argument('--out-path', type=Path, required=True)
-    ### TODO: {train-steps} should be a list of ints.
-    parser.add_argument("--train-steps", type=int, required=True)
+    parser.add_argument("--train-steps", type=str, required=True)
     parser.add_argument("--skip-existing", action="store_true", default=False)
 
     args = parser.parse_args()
+
+    #
+
+    arg_train_steps = args.train_steps.split(",")
+    arg_train_steps = filter(lambda step: len(step) > 0, arg_train_steps)
+    arg_train_steps = map(int, arg_train_steps)
+    arg_train_steps = list(arg_train_steps)
 
     #
 
@@ -283,6 +290,6 @@ if __name__ == '__main__':
         model=args.model,
         prompt_filepath=args.prompt_file,
         out_rootpath=args.out_path,
-        train_steps=args.train_steps,
+        train_steps=arg_train_steps,
         skip_existing=args.skip_existing,
     )

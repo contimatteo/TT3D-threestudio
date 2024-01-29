@@ -327,8 +327,9 @@ class _Models():
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
-        train_steps: int,
+        train_steps: List[int],
     ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 1
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -342,7 +343,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[0]}",
         ]
 
         args_configs.append((run_args, run_extra_args))
@@ -356,8 +357,9 @@ class _Models():
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
-        train_steps: int,
+        train_steps: List[int],
     ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 2
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -371,7 +373,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[0]}",
             "system.renderer.context_type=cuda",
         ]
 
@@ -394,7 +396,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[1]}",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
             "system.renderer.context_type=cuda",
         ]
@@ -410,8 +412,9 @@ class _Models():
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
-        train_steps: int,
+        train_steps: List[int],
     ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 3
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -425,7 +428,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[0]}",
             "data.width=64",  ### TODO: prefers memory optimization over quality
             "data.height=64",  ### TODO: prefers memory optimization over quality
             "data.batch_size=1",  ### TODO: prefers memory optimization over quality
@@ -451,7 +454,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[1]}",
             "system.renderer.context_type=cuda",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
             "system.geometry_convert_override.isosurface_threshold=auto",
@@ -476,7 +479,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[2]}",
             "system.renderer.context_type=cuda",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
         ]
@@ -492,8 +495,9 @@ class _Models():
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
-        train_steps: int,
+        train_steps: List[int],
     ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 2
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -507,7 +511,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[0]}",
         ]
 
         args_configs.append((run_args, run_extra_args))
@@ -529,7 +533,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[1]}",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
             "system.renderer.context_type=cuda",
         ]
@@ -545,8 +549,9 @@ class _Models():
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
-        train_steps: int,
+        train_steps: List[int],
     ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 1
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -560,7 +565,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[0]}",
         ]
 
         args_configs.append((run_args, run_extra_args))
@@ -574,8 +579,9 @@ class _Models():
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
-        train_steps: int,
+        train_steps: List[int],
     ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 1
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -590,7 +596,7 @@ class _Models():
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
-            f"trainer.max_steps={train_steps}",
+            f"trainer.max_steps={train_steps[0]}",
             "data.width=64",  ### TODO: prefers memory optimization over quality
             "data.height=64",  ### TODO: prefers memory optimization over quality
             "data.batch_size=1",  ### TODO: prefers memory optimization over quality
