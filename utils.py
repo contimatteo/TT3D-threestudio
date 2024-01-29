@@ -426,7 +426,6 @@ class _Models():
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
-            # "system.renderer.context_type=cuda",
             "data.width=64",  ### TODO: prefers memory optimization over quality
             "data.height=64",  ### TODO: prefers memory optimization over quality
             "data.batch_size=1",  ### TODO: prefers memory optimization over quality
@@ -592,6 +591,9 @@ class _Models():
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps}",
+            "data.width=64",  ### TODO: prefers memory optimization over quality
+            "data.height=64",  ### TODO: prefers memory optimization over quality
+            "data.batch_size=1",  ### TODO: prefers memory optimization over quality
         ]
 
         args_configs.append((run_args, run_extra_args))
