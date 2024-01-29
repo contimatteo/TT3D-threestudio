@@ -68,6 +68,8 @@ def _export(
         pass
     elif model == "prolificdreamer":
         pass
+    elif model == "magic3d":
+        pass
     else:
         ### just for safety ...
         raise Exception("Model custom run arguments not configured.")

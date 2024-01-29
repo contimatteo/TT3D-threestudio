@@ -108,6 +108,7 @@ class _Configs():
         "dreamfusion-sd",
         "fantasia3d",
         "prolificdreamer",
+        "magic3d",
     ]
 
     # @classmethod
@@ -276,6 +277,9 @@ class _Storage():
         if model == "prolificdreamer":
             return "prolificdreamer-texture"
 
+        if model == "magic3d":
+            return "magic3d-refine-sd"
+
         raise Exception("Model output final dirname not configured.")
 
     @staticmethod
@@ -292,6 +296,9 @@ class _Storage():
 
         if model == "prolificdreamer":
             return ["prolificdreamer", "prolificdreamer-geometry"]
+
+        if model == "magic3d":
+            return ["magic3d-coarse-sd"]
 
         raise Exception("Model output intermediate dirnames not configured.")
 
@@ -459,6 +466,60 @@ class _Models():
             f"trainer.max_steps={train_steps}",
             "system.renderer.context_type=cuda",
             f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def magic3d(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: int,
+    ) -> List[Tuple[dict, list]]:
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/magic3d-coarse-sd.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            "system.renderer.context_type=cuda",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        result_path = _Storage.build_result_path_by_prompt(
+            model_dirname="magic3d-coarse-sd",
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            assert_exists=False,
+        )
+
+        ###
+        ### STEP #2
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/magic3d-refine-sd.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps}",
+            f"system.geometry_convert_from={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
+            "system.renderer.context_type=cuda",
         ]
 
         args_configs.append((run_args, run_extra_args))
