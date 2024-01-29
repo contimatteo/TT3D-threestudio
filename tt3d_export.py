@@ -62,12 +62,17 @@ def _export(
 
     if model == "dreamfusion-sd":
         run_extra_args += [
-            "system.geometry.isosurface_threshold=auto",
+            # "system.geometry.isosurface_threshold=auto",
+            "system.geometry.isosurface_method=mc-cpu",
+            "system.geometry.isosurface_resolution=256",
         ]
     elif model == "fantasia3d":
         pass
     elif model == "prolificdreamer":
-        pass
+        run_extra_args += [
+            "system.geometry.isosurface_method=mc-cpu",
+            "system.geometry.isosurface_resolution=256",
+        ]
     elif model == "magic3d":
         pass
     elif model == "textmesh":
