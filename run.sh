@@ -45,3 +45,18 @@ CUDA_VISIBLE_DEVICES=3 python3 tt3d_generate.py \
 CUDA_VISIBLE_DEVICES=3 python3 tt3d_export.py \
   --model "prolificdreamer" \
   --source-path /media/data2/mconti/TT3D/models/Threestudio-ProlificDreamer/outputs
+
+
+### 
+### MAGIC-3D
+### 
+
+CUDA_VISIBLE_DEVICES=3 python3 tt3d_generate.py \
+  --model "magic3d" \
+  --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
+  --out-path /media/data2/mconti/TT3D/models/Threestudio-Magic3D/outputs \
+  --train-steps=100
+
+CUDA_VISIBLE_DEVICES=3 python3 tt3d_export.py \
+  --model "magic3d" \
+  --source-path /media/data2/mconti/TT3D/models/Threestudio-Magic3D/outputs
