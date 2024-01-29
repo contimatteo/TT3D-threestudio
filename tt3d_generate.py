@@ -263,6 +263,7 @@ if __name__ == '__main__':
     )
     parser.add_argument('--prompt-file', type=Path, required=True)
     parser.add_argument('--out-path', type=Path, required=True)
+    ### TODO: {train-steps} should be a list of ints.
     parser.add_argument("--train-steps", type=int, required=True)
     parser.add_argument("--skip-existing", action="store_true", default=False)
 
