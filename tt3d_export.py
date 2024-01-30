@@ -167,6 +167,8 @@ if __name__ == '__main__':
         choices=["quality", "speed", "tradeoff"],
         default="tradeoff",
     )
+    ### TODO: add option to skip existing results.
+    # parser.add_argument("--skip-existing", action="store_true", default=False)
 
     args = parser.parse_args()
 
