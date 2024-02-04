@@ -6,7 +6,7 @@ exit 0
 ### DREAMFUSION
 ### 
 
-CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
   --model "dreamfusion-sd" \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
   --out-path /media/data2/mconti/TT3D/models/Threestudio-DreamFusionSD/outputs \
@@ -17,18 +17,18 @@ CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
 ### FANTASIA-3D
 ### 
 
-CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
   --model "fantasia3d" \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
   --out-path /media/data2/mconti/TT3D/models/Threestudio-Fantasia3D/outputs \
-  --train-steps="800,200"
+  --train-steps="900,100"
 
 
 ### 
 ### PROFILIC-DREAMER
 ### 
 
-CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
   --model "prolificdreamer" \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
   --out-path /media/data2/mconti/TT3D/models/Threestudio-ProlificDreamer/outputs \
@@ -39,18 +39,18 @@ CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
 ### MAGIC-3D
 ### 
 
-CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
   --model "magic3d" \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
   --out-path /media/data2/mconti/TT3D/models/Threestudio-Magic3D/outputs \
-  --train-steps="800,200"
+  --train-steps="900,100"
 
 
 ### 
 ### TEXT-MESH
 ### 
 
-CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
   --model "textmesh" \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
   --out-path /media/data2/mconti/TT3D/models/Threestudio-TextMesh/outputs \
@@ -61,7 +61,7 @@ CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
 ### HIFA
 ### 
 
-CUDA_VISIBLE_DEVICES=2 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
   --model "hifa" \
   --prompt-file /media/data2/mconti/TT3D/prompts/test.v1.n2.txt \
   --out-path /media/data2/mconti/TT3D/models/Threestudio-HiFA/outputs \
