@@ -283,7 +283,8 @@ class _Storage():
             return "magic3d-refine-sd"
 
         if model == "textmesh":
-            return "textmesh-sd"
+            # return "textmesh-sd"
+            return "textmesh-if"
 
         if model == "hifa":
             return "hifa"
@@ -561,7 +562,8 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        run_args["config"] = "configs/textmesh-sd.yaml"
+        # run_args["config"] = "configs/textmesh-sd.yaml"
+        run_args["config"] = "configs/textmesh-if.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
