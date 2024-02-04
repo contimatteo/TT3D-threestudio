@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pip install -U pip wheel
+pip install -U pip wheel setuptools
 pip install torch torchvision xformers --index-url https://download.pytorch.org/whl/cu118
 pip install ninja
 pip install -r requirements-custom.txt
