@@ -8,7 +8,7 @@ exit 0
 
 CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
   --model "dreamfusion-sd" \
-  --source-path /media/data2/mconti/TT3D/models/Threestudio-DreamFusionSD/outputs
+  --source-path /media/data2/mconti/TT3D/outputs/Threestudio-DreamFusionSD/
 
 
 ### 
@@ -17,7 +17,7 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
   --model "fantasia3d" \
-  --source-path /media/data2/mconti/TT3D/models/Threestudio-Fantasia3D/outputs
+  --source-path /media/data2/mconti/TT3D/outputs/Threestudio-Fantasia3D/
 
 
 ### 
@@ -26,7 +26,7 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
   --model "prolificdreamer" \
-  --source-path /media/data2/mconti/TT3D/models/Threestudio-ProlificDreamer/outputs
+  --source-path /media/data2/mconti/TT3D/outputs/Threestudio-ProlificDreamer/
 
 
 ### 
@@ -35,7 +35,7 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
   --model "magic3d" \
-  --source-path /media/data2/mconti/TT3D/models/Threestudio-Magic3D/outputs
+  --source-path /media/data2/mconti/TT3D/outputs/Threestudio-Magic3D/
 
 
 ### 
@@ -44,7 +44,7 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
   --model "textmesh" \
-  --source-path /media/data2/mconti/TT3D/models/Threestudio-TextMesh/outputs
+  --source-path /media/data2/mconti/TT3D/outputs/Threestudio-TextMesh/
 
 
 ### 
@@ -53,4 +53,4 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=1 python3 tt3d_export.py \
   --model "hifa" \
-  --source-path /media/data2/mconti/TT3D/models/Threestudio-HiFA/outputs
+  --source-path /media/data2/mconti/TT3D/outputs/Threestudio-HiFA/
