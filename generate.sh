@@ -2,14 +2,22 @@
 
 exit 0
 
+ROOT_DIR="/media/data2/mconti/TT3D"
+PROMPT_DIR="${ROOT_DIR}/prompts"
+OUT_DIR="${ROOT_DIR}/outputs"
+
+GPU=3
+PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n10.txt"
+
+
 ### 
 ### DREAMFUSION
 ### 
 
-CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "dreamfusion-sd" \
-  --prompt-file /media/data2/mconti/TT3D/prompts/test.t3bench.n1.txt \
-  --out-path /media/data2/mconti/TT3D/outputs/Threestudio-DreamFusionSD/ \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-DreamFusionSD/" \
   --train-steps="1000"
 
 
@@ -17,10 +25,10 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
 ### FANTASIA-3D
 ### 
 
-CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "fantasia3d" \
-  --prompt-file /media/data2/mconti/TT3D/prompts/test.t3bench.n1.txt \
-  --out-path /media/data2/mconti/TT3D/outputs/Threestudio-Fantasia3D/ \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
   --train-steps="900,100"
 
 
@@ -28,10 +36,10 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
 ### PROFILIC-DREAMER
 ### 
 
-CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "prolificdreamer" \
-  --prompt-file /media/data2/mconti/TT3D/prompts/test.t3bench.n1.txt \
-  --out-path /media/data2/mconti/TT3D/outputs/Threestudio-ProlificDreamer/ \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
   --train-steps="800,100,100"
 
 
@@ -39,10 +47,10 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
 ### MAGIC-3D
 ### 
 
-CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d" \
-  --prompt-file /media/data2/mconti/TT3D/prompts/test.t3bench.n1.txt \
-  --out-path /media/data2/mconti/TT3D/outputs/Threestudio-Magic3D/ \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
   --train-steps="900,100"
 
 
@@ -50,10 +58,10 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
 ### TEXT-MESH
 ### 
 
-CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh" \
-  --prompt-file /media/data2/mconti/TT3D/prompts/test.t3bench.n1.txt \
-  --out-path /media/data2/mconti/TT3D/outputs/Threestudio-TextMesh/ \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
   --train-steps="1000"
 
 
@@ -61,8 +69,8 @@ CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
 ### HIFA
 ### 
 
-CUDA_VISIBLE_DEVICES=1 python3 tt3d_generate.py \
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "hifa" \
-  --prompt-file /media/data2/mconti/TT3D/prompts/test.t3bench.n1.txt \
-  --out-path /media/data2/mconti/TT3D/outputs/Threestudio-HiFA/ \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-HiFA/" \
   --train-steps="1000"
