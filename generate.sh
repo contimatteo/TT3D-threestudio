@@ -9,6 +9,7 @@ OUT_DIR="${ROOT_DIR}/outputs"
 GPU=0
 PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n10.txt"
 
+export TRANSFORMERS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 export HF_HOME="${ROOT_DIR}/cache/huggingface"
 
