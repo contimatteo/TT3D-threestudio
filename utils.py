@@ -312,7 +312,8 @@ class _Storage():
             return ["prolificdreamer", "prolificdreamer-geometry"]
 
         if model == "magic3d":
-            return ["magic3d-coarse-sd"]
+            # return ["magic3d-coarse-sd"]
+            return ["magic3d-coarse-if"]
 
         if model == "textmesh-sd" or model == "textmesh-if":
             return []
@@ -537,7 +538,7 @@ class _Models():
         args_configs.append((run_args, run_extra_args))
 
         result_path = _Storage.build_result_path_by_prompt(
-            model_dirname="magic3d-coarse-sd",
+            model_dirname="magic3d-coarse-if",
             prompt=prompt,
             out_rootpath=out_rootpath,
             assert_exists=False,
