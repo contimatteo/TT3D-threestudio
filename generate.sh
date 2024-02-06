@@ -17,8 +17,9 @@ export HF_HOME="${ROOT_DIR}/cache/huggingface"
 ### DREAMFUSION
 ### 
 
+#  --model "dreamfusion-sd" \
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "dreamfusion-sd" \
+  --model "dreamfusion-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-DreamFusionSD/" \
   --train-steps="1000"
@@ -61,8 +62,9 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### TEXT-MESH
 ### 
 
+#  --model "textmesh-sd" \
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "textmesh" \
+  --model "textmesh-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
   --train-steps="1000"

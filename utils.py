@@ -1,5 +1,5 @@
 ### pylint: disable=missing-function-docstring,missing-class-docstring,missing-module-docstring,wrong-import-order
-from typing import Tuple, List, Callable
+from typing import Tuple, List, Callable, Literal
 
 import os
 import torch
@@ -106,10 +106,12 @@ class _Prompt():
 class _Configs():
     MODELS_SUPPORTED: List[str] = [
         "dreamfusion-sd",
+        "dreamfusion-if",
         "fantasia3d",
         "prolificdreamer",
         "magic3d",
-        "textmesh",
+        "textmesh-sd",
+        "textmesh-if",
         "hifa",
     ]
 
@@ -272,6 +274,8 @@ class _Storage():
 
         if model == "dreamfusion-sd":
             return "dreamfusion-sd"
+        if model == "dreamfusion-if":
+            return "dreamfusion-if"
 
         if model == "fantasia3d":
             return "fantasia3d-texture"
@@ -282,8 +286,9 @@ class _Storage():
         if model == "magic3d":
             return "magic3d-refine-sd"
 
-        if model == "textmesh":
-            # return "textmesh-sd"
+        if model == "textmesh-sd":
+            return "textmesh-sd"
+        if model == "textmesh-if":
             return "textmesh-if"
 
         if model == "hifa":
@@ -297,7 +302,7 @@ class _Storage():
         assert len(model) > 0
         assert model in Utils.Configs.MODELS_SUPPORTED
 
-        if model == "dreamfusion-sd":
+        if model == "dreamfusion-sd" or model == "dreamfusion-if":
             return []
 
         if model == "fantasia3d":
@@ -309,7 +314,7 @@ class _Storage():
         if model == "magic3d":
             return ["magic3d-coarse-sd"]
 
-        if model == "textmesh":
+        if model == "textmesh-sd" or model == "textmesh-if":
             return []
 
         if model == "hifa":
@@ -324,13 +329,16 @@ class _Storage():
 class _Models():
 
     @staticmethod
-    def dreamfusionsd(
+    def dreamfusion(
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
         out_rootpath: Path,
         train_steps: List[int],
+        mode: Literal["sd", "if"],
     ) -> List[Tuple[dict, list]]:
         assert len(train_steps) == 1
+        assert isinstance(mode, str)
+        assert mode in ["sd", "if"]
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -340,12 +348,22 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        run_args["config"] = "configs/dreamfusion-sd.yaml"
+        if mode == "if":
+            run_args["config"] = "configs/dreamfusion-if.yaml"
+        else:
+            run_args["config"] = "configs/dreamfusion-sd.yaml"
+
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps[0]}",
         ]
+
+        if mode == "if":
+            ### here we adopt random background augmentation to improve geometry quality
+            run_extra_args += [
+                "system.background.random_aug=true",
+            ]
 
         args_configs.append((run_args, run_extra_args))
 
@@ -551,8 +569,11 @@ class _Models():
         prompt: str,
         out_rootpath: Path,
         train_steps: List[int],
+        mode: Literal["sd", "if"],
     ) -> List[Tuple[dict, list]]:
         assert len(train_steps) == 1
+        assert isinstance(mode, str)
+        assert mode in ["sd", "if"]
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -562,8 +583,11 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        # run_args["config"] = "configs/textmesh-sd.yaml"
-        run_args["config"] = "configs/textmesh-if.yaml"
+        if mode == "if":
+            run_args["config"] = "configs/textmesh-if.yaml"
+        else:
+            run_args["config"] = "configs/textmesh-sd.yaml"
+
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
