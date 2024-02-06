@@ -2,6 +2,8 @@
 
 exit 0
 
+rm -rf .threestudio_cache/
+
 ROOT_DIR="/media/data2/mconti/TT3D"
 PROMPT_DIR="${ROOT_DIR}/prompts"
 OUT_DIR="${ROOT_DIR}/outputs/configure_script_cache"
@@ -12,7 +14,7 @@ PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n1.txt"
 export TRANSFORMERS_OFFLINE=0
 export HF_DATASETS_OFFLINE=0
 export HF_HUB_OFFLINE=0
-export HF_HOME="${ROOT_DIR}/cache/huggingface"
+# export HF_HOME="${ROOT_DIR}/cache/huggingface"
 export HF_HUB_DOWNLOAD_TIMEOUT=30
 
 
