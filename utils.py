@@ -360,11 +360,12 @@ class _Models():
             f"trainer.max_steps={train_steps[0]}",
         ]
 
-        if mode == "if":
-            ### here we adopt random background augmentation to improve geometry quality
-            run_extra_args += [
-                "system.background.random_aug=true",
-            ]
+        ### TODO: enable this ...
+        # if mode == "if":
+        #     ### here we adopt random background augmentation to improve geometry quality
+        #     run_extra_args += [
+        #         "system.background.random_aug=true",
+        #     ]
 
         args_configs.append((run_args, run_extra_args))
 
