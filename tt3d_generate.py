@@ -129,12 +129,13 @@ def skip_generation_or_delete_existing_model_version(
 def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_steps: List[int]) -> None:
     args_configs: List[Tuple[dict, list]] = None
 
-    if model == "dreamfusion-sd":
-        args_configs = Utils.Models.dreamfusionsd(
+    if model == "dreamfusion-sd" or model == "dreamfusion-if":
+        args_configs = Utils.Models.dreamfusion(
             args_builder_fn=_build_default_args,
             prompt=prompt,
             out_rootpath=out_rootpath,
             train_steps=train_steps,
+            mode="if" if model == "dreamfusion-if" else "sd",
         )
 
     if model == "fantasia3d":
@@ -161,12 +162,13 @@ def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_
             train_steps=train_steps,
         )
 
-    if model == "textmesh":
+    if model == "textmesh-sd" or model == "textmesh-if":
         args_configs = Utils.Models.textmesh(
             args_builder_fn=_build_default_args,
             prompt=prompt,
             out_rootpath=out_rootpath,
             train_steps=train_steps,
+            mode="if" if model == "textmesh-if" else "sd",
         )
 
     if model == "hifa":
