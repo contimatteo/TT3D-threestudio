@@ -526,7 +526,8 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        run_args["config"] = "configs/magic3d-coarse-sd.yaml"
+        # run_args["config"] = "configs/magic3d-coarse-sd.yaml"
+        run_args["config"] = "configs/magic3d-coarse-if.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
