@@ -60,7 +60,7 @@ def _export(
 
     #
 
-    if model == "dreamfusion-sd":
+    if model == "dreamfusion-sd" or model == "dreamfusion-if":
         run_extra_args += [
             "system.geometry.isosurface_threshold=auto",
             # "system.geometry.isosurface_method=mc-cpu",
@@ -76,7 +76,7 @@ def _export(
         pass
     elif model == "magic3d":
         pass
-    elif model == "textmesh":
+    elif model == "textmesh-sd" or model == "textmesh-if":
         pass
     elif model == "hifa":
         run_extra_args += [
