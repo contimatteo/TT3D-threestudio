@@ -11,7 +11,7 @@ PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n1.txt"
 
 export HF_HUB_OFFLINE=0
 export HF_HUB_DOWNLOAD_TIMEOUT=30
-export HF_HOME="${ROOT_DIR}/checkpoints/huggingface"
+export HF_HOME="${ROOT_DIR}/cache/huggingface"
 
 
 ### 
