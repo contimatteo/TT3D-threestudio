@@ -5,7 +5,10 @@ exit 0
 ROOT_DIR="/media/data2/mconti/TT3D"
 OUT_DIR="${ROOT_DIR}/outputs"
 
-GPU=1
+GPU=0
+
+export HF_HUB_OFFLINE=1
+export HF_HOME="${ROOT_DIR}/cache/huggingface"
 
 
 ### 

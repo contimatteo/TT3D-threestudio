@@ -6,7 +6,7 @@ ROOT_DIR="/media/data2/mconti/TT3D"
 PROMPT_DIR="${ROOT_DIR}/prompts"
 OUT_DIR="${ROOT_DIR}/outputs"
 
-GPU=1
+GPU=0
 PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n10.txt"
 
 export HF_HUB_OFFLINE=1

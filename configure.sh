@@ -1,6 +1,6 @@
 ###
 
-# exit 0
+exit 0
 
 ROOT_DIR="/media/data2/mconti/TT3D"
 PROMPT_DIR="${ROOT_DIR}/prompts"
