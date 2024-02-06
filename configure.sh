@@ -98,5 +98,5 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 
 ###
 
-# remove generated samples (they are out-of-scope ...)
+# remove generated samples (used only for setup purposes ...)
 rm -rf $OUT_DIR

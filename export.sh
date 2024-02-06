@@ -7,17 +7,23 @@ OUT_DIR="${ROOT_DIR}/outputs"
 
 GPU=0
 
+export TRANSFORMERS_OFFLINE=1
+export HF_DATASETS_OFFLINE=1
 export HF_HUB_OFFLINE=1
-export HF_HOME="${ROOT_DIR}/cache/huggingface"
+# export HF_HOME="${ROOT_DIR}/cache/huggingface"
 
 
 ### 
 ### DREAMFUSION
 ### 
 
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "dreamfusion-sd" \
+#   --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
+
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-  --model "dreamfusion-sd" \
-  --source-path "${OUT_DIR}/Threestudio-DreamFusionSD/"
+  --model "dreamfusion-if" \
+  --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
 
 
 ### 
@@ -51,8 +57,12 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ### TEXT-MESH
 ### 
 
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "textmesh-sd" \
+#   --source-path "${OUT_DIR}/Threestudio-TextMesh/"
+
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-  --model "textmesh" \
+  --model "textmesh-if" \
   --source-path "${OUT_DIR}/Threestudio-TextMesh/"
 
 
