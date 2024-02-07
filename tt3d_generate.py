@@ -33,62 +33,11 @@ def _build_default_args() -> Tuple[dict, list]:
     default_extra_args = [
         "use_timestamp=False",
         "system.prompt_processor.spawn=false",
+        # "system.cleanup_after_validation_step=true",
+        # "system.cleanup_after_test_step=true",
     ]
 
     return default_args, default_extra_args
-
-
-# def _delete_unnecessary_ckpts(
-#     model_dirname: str,
-#     prompt: str,
-#     out_rootpath: Path,
-# ) -> None:
-#     result_path = Utils.Storage.build_result_path_by_prompt(
-#         model_dirname=model_dirname,
-#         prompt=prompt,
-#         out_rootpath=out_rootpath,
-#     )
-
-#     ckpts_path = result_path.joinpath("ckpts")
-#     assert ckpts_path.exists()
-#     assert ckpts_path.is_dir()
-#     ### "last.ckpt" is a symlink to the last checkpoint.
-#     last_ckpt_path = ckpts_path.joinpath("last.ckpt")
-#     assert last_ckpt_path.exists()
-#     assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
-
-#     ckpts_names_to_keep = [
-#         "last.ckpt",
-#         Path(os.readlink(last_ckpt_path)).name,
-#     ]
-
-#     for ckpt_path in ckpts_path.glob("*.ckpt"):
-#         if ckpt_path.name in ckpts_names_to_keep:
-#             continue
-#         ckpt_path.unlink()
-
-###
-
-# def __dreamfusionsd(prompt: str, out_rootpath: Path, train_steps: int) -> None:
-#     args_builder_fn = lambda: _build_default_args()
-
-#     def __step1_run() -> None:
-#         CONFIG_NAME = "dreamfusion-sd"
-#         run_args, run_extra_args = args_builder_fn()
-#         run_args["config"] = f"configs/{CONFIG_NAME}.yaml"
-#         run_extra_args += [
-#             f"exp_root_dir={str(out_rootpath)}",
-#             f"system.prompt_processor.prompt={prompt}",
-#             f"trainer.max_steps={train_steps}",
-#         ]
-#         run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
-#         _delete_unnecessary_ckpts(
-#             model_dirname=CONFIG_NAME,
-#             prompt=prompt,
-#             out_rootpath=out_rootpath,
-#         )
-
-#     __step1_run()
 
 
 def skip_generation_or_delete_existing_model_version(
@@ -187,9 +136,6 @@ def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_
         __run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
 
 
-###
-
-
 def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     REQUIRED_ARGS = ["config", "gpu", "train", "export"]
     REQUIRED_EXTRA_ARGS = ['system.prompt_processor.prompt', 'trainer.max_steps']
@@ -218,13 +164,20 @@ def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     )
 
 
+def _delete_prompt_embeddings_cache():
+    prompt_embeddings_cache_path = Path(".threestudio_cache/text_embeddings")
+    if prompt_embeddings_cache_path.exists():
+        shutil.rmtree(prompt_embeddings_cache_path)
+
+
+###
+
+
 def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: List[int], skip_existing: bool):
     assert isinstance(model, str)
     assert len(model) > 0
     assert model in Utils.Configs.MODELS_SUPPORTED
     assert isinstance(out_rootpath, Path)
-    # assert out_rootpath.exists()
-    # assert out_rootpath.is_dir()
     assert isinstance(train_steps, list)
     assert all((isinstance(step, int) for step in train_steps))
     assert all((0 <= step <= 10000 for step in train_steps))
@@ -243,6 +196,8 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
         if not isinstance(prompt, str) or len(prompt) < 2:
             continue
 
+        _delete_prompt_embeddings_cache()
+
         skip_generation = skip_generation_or_delete_existing_model_version(
             skip_existing=skip_existing,
             model=model,
@@ -259,6 +214,8 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
             out_rootpath=out_rootpath,
             train_steps=train_steps,
         )
+
+    _delete_prompt_embeddings_cache()
 
 
 ###
