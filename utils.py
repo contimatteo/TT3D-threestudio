@@ -312,8 +312,8 @@ class _Storage():
             return ["prolificdreamer", "prolificdreamer-geometry"]
 
         if model == "magic3d":
-            # return ["magic3d-coarse-sd"]
-            return ["magic3d-coarse-if"]
+            # return ["magic3d-coarse-if"]
+            return ["magic3d-coarse-sd"]
 
         if model == "textmesh-sd" or model == "textmesh-if":
             return []
@@ -528,8 +528,8 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        # run_args["config"] = "configs/magic3d-coarse-sd.yaml"
-        run_args["config"] = "configs/magic3d-coarse-if.yaml"
+        run_args["config"] = "configs/magic3d-coarse-sd.yaml"
+        # run_args["config"] = "configs/magic3d-coarse-if.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
@@ -539,7 +539,8 @@ class _Models():
         args_configs.append((run_args, run_extra_args))
 
         result_path = _Storage.build_result_path_by_prompt(
-            model_dirname="magic3d-coarse-if",
+            # model_dirname="magic3d-coarse-if",
+            model_dirname="magic3d-coarse-sd",
             prompt=prompt,
             out_rootpath=out_rootpath,
             assert_exists=False,
