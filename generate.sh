@@ -2,14 +2,14 @@
 
 exit 0
 
-rm -rf .threestudio_cache/
-
-ROOT_DIR="/media/data2/mconti/TT3D"
-PROMPT_DIR="${ROOT_DIR}/prompts"
-OUT_DIR="${ROOT_DIR}/outputs"
 
 GPU=0
-PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n10.txt"
+PROMPT="test_t3bench_n1"
+
+ROOT_DIR="/media/data2/mconti/TT3D"
+OUT_DIR="${ROOT_DIR}/outputs/${PROMPT}"
+PROMPT_FILE="${ROOT_DIR}/prompts/${PROMPT}.txt"
+
 
 export TRANSFORMERS_OFFLINE=1
 export HF_DATASETS_OFFLINE=1
@@ -53,7 +53,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "prolificdreamer" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-  --train-steps="800,100,100"
+  --train-steps="400,400,200"
 
 
 ### 

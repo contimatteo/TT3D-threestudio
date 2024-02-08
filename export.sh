@@ -2,10 +2,13 @@
 
 exit 0
 
-ROOT_DIR="/media/data2/mconti/TT3D"
-OUT_DIR="${ROOT_DIR}/outputs"
 
 GPU=0
+PROMPT="test_t3bench_n1"
+
+ROOT_DIR="/media/data2/mconti/TT3D"
+OUT_DIR="${ROOT_DIR}/outputs/${PROMPT}"
+
 
 export TRANSFORMERS_OFFLINE=1
 export HF_DATASETS_OFFLINE=1
