@@ -25,13 +25,15 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "dreamfusion-sd" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-  --train-steps="1000"
+  --train-steps="1000" \
+  --skip-existing
 
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "dreamfusion-if" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-#   --train-steps="1000"
+#   --train-steps="1000" \
+#   --skip-existing
 
 
 ### 
@@ -42,7 +44,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "fantasia3d" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
-  --train-steps="900,100"
+  --train-steps="900,100" \
+  --skip-existing
 
 
 ### 
@@ -53,7 +56,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "prolificdreamer" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-  --train-steps="400,400,200"
+  --train-steps="400,400,200" \
+  --skip-existing
 
 
 ### 
@@ -64,7 +68,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="900,100"
+  --train-steps="900,100" \
+  --skip-existing
 
 
 ### 
@@ -75,13 +80,15 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh-sd" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="1000"
+  --train-steps="1000" \
+  --skip-existing
 
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "textmesh-if" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-#   --train-steps="1000"
+#   --train-steps="1000" \
+#   --skip-existing
 
 
 ### 
@@ -92,4 +99,5 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "hifa" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
-  --train-steps="1000"
+  --train-steps="1000" \
+  --skip-existing
