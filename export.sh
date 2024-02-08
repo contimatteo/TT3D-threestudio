@@ -17,13 +17,13 @@ export HF_HUB_OFFLINE=1
 ### DREAMFUSION
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-#   --model "dreamfusion-sd" \
-#   --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
-
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-  --model "dreamfusion-if" \
+  --model "dreamfusion-sd" \
   --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "dreamfusion-if" \
+#   --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
 
 
 ### 
@@ -57,13 +57,13 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ### TEXT-MESH
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-#   --model "textmesh-sd" \
-#   --source-path "${OUT_DIR}/Threestudio-TextMesh/"
-
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-  --model "textmesh-if" \
+  --model "textmesh-sd" \
   --source-path "${OUT_DIR}/Threestudio-TextMesh/"
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "textmesh-if" \
+#   --source-path "${OUT_DIR}/Threestudio-TextMesh/"
 
 
 ### 
