@@ -40,6 +40,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### FANTASIA-3D
 ### 
 
+### TODO: test 600,400
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "fantasia3d" \
   --prompt-file $PROMPT_FILE \
@@ -68,7 +69,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="900,100" \
+  --train-steps="600,400" \
   --skip-existing
 
 
