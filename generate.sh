@@ -40,7 +40,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### FANTASIA-3D
 ### 
 
-### TODO: test 600,400
+### TODO: need to add support for priors shape initialization
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "fantasia3d" \
   --prompt-file $PROMPT_FILE \
