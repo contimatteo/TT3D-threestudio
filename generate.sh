@@ -28,26 +28,17 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --train-steps="1000" \
   --skip-existing
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "dreamfusion-if" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-#   --train-steps="1000" \
-#   --skip-existing
-
-
 ### 
 ### FANTASIA-3D
 ### 
 
 ### TODO: need to add support for priors shape initialization
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "fantasia3d" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
-  --train-steps="800,200" \
-  --skip-existing
-
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "fantasia3d" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
+#   --train-steps="800,200" \
+#   --skip-existing
 
 ### 
 ### PROFILIC-DREAMER
@@ -60,7 +51,6 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --train-steps="400,400,200" \
   --skip-existing
 
-
 ### 
 ### MAGIC-3D
 ### 
@@ -72,7 +62,6 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --train-steps="600,400" \
   --skip-existing
 
-
 ### 
 ### TEXT-MESH
 ### 
@@ -83,14 +72,6 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ##   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
 ##   --train-steps="1000" \
 ##   --skip-existing
-
-### CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-###   --model "textmesh-if" \
-###   --prompt-file $PROMPT_FILE \
-###   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-###   --train-steps="1000" \
-###   --skip-existing
-
 
 ### 
 ### HIFA
