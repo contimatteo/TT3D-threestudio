@@ -77,19 +77,19 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### TEXT-MESH
 ### 
 
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "textmesh-sd" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="1000" \
-  --skip-existing
+## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+##   --model "textmesh-sd" \
+##   --prompt-file $PROMPT_FILE \
+##   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+##   --train-steps="1000" \
+##   --skip-existing
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "textmesh-if" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-#   --train-steps="1000" \
-#   --skip-existing
+### CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+###   --model "textmesh-if" \
+###   --prompt-file $PROMPT_FILE \
+###   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+###   --train-steps="1000" \
+###   --skip-existing
 
 
 ### 
