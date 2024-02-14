@@ -62,7 +62,7 @@ def _generate_deepfloyd_embeddings(
     if skip_existing and prompt_hashed_filepath.exists():
         print("")
         print("========================================")
-        print("Path already exists -> ", prompt_hashed_filepath)
+        print("Embedding already exists -> ", prompt_hashed_filepath)
         print("========================================")
         print("")
         return
