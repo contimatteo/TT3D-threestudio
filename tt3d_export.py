@@ -46,7 +46,6 @@ def _build_default_args(goal: Literal["quality", "speed", "tradeoff"]) -> Tuple[
 def skip_exporting(
     skip_existing: bool,
     result_path: Path,
-    out_rootpath: Path,
 ) -> bool:
     # out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
     # out_result_final_path = Utils.Storage.build_result_path_by_prompt(
@@ -173,12 +172,7 @@ def main(
         if not result_path.is_dir():
             continue
 
-        skip_export = skip_exporting(
-            skip_existing=skip_existing,
-            result_path=result_path,
-            source_rootpath=source_rootpath,
-        )
-
+        skip_export = skip_exporting(skip_existing=skip_existing, result_path=result_path)
         if skip_export:
             continue
 
