@@ -26,7 +26,7 @@ export HF_HUB_OFFLINE=1
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
   --prompt-file $PROMPT_FILE \
   --out-path "${ROOT_DIR}/outputs/cache/embeddings/Threestudio/" \
-  --train-steps="5"
+  --train-steps="1"
 
 
 ###############################################################################  
