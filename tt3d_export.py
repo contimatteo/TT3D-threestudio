@@ -43,9 +43,6 @@ def _build_default_args(goal: Literal["quality", "speed", "tradeoff"]) -> Tuple[
     return default_args, default_extra_args
 
 
-###
-
-
 def _export(
     model: str,
     result_path: Path,
@@ -126,6 +123,7 @@ def main(
     model: str,
     source_rootpath: Path,
     goal: Literal["quality", "speed", "tradeoff"],
+    skip_existing: bool,
 ):
     assert isinstance(model, str)
     assert len(model) > 0
@@ -135,6 +133,7 @@ def main(
     assert source_rootpath.is_dir()
     assert isinstance(goal, str)
     assert goal in ["quality", "speed", "tradeoff"]
+    assert isinstance(skip_existing, bool)
 
     out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
     source_model_rootpath = source_rootpath.joinpath(out_model_dirname)
@@ -167,8 +166,7 @@ if __name__ == '__main__':
         choices=["quality", "speed", "tradeoff"],
         default="tradeoff",
     )
-    ### TODO: add option to skip existing results.
-    # parser.add_argument("--skip-existing", action="store_true", default=False)
+    parser.add_argument("--skip-existing", action="store_true", default=False)
 
     args = parser.parse_args()
 
@@ -178,4 +176,5 @@ if __name__ == '__main__':
         model=args.model,
         source_rootpath=args.source_path,
         goal=args.goal,
+        skip_existing=args.skip_existing,
     )
