@@ -583,11 +583,9 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        if mode == "if":
-            run_args["config"] = "configs/magic3d-coarse-if.yaml"
-        else:
-            run_args["config"] = "configs/magic3d-coarse-sd.yaml"
+        config_name = f"magic3d-coarse-{mode}"
 
+        run_args["config"] = f"configs/{config_name}.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
@@ -598,7 +596,8 @@ class _Models():
 
         result_path = _Storage.build_result_path_by_prompt(
             # model_dirname="magic3d-coarse-if",
-            model_dirname="magic3d-coarse-sd",
+            # model_dirname="magic3d-coarse-sd",
+            model_dirname=config_name,
             prompt=prompt,
             out_rootpath=out_rootpath,
             assert_exists=False,
