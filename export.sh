@@ -1,13 +1,14 @@
 ###
 
-exit 1
+# exit 1
 
 
 GPU=0
-PROMPT="test_t3bench_n1"
+PROMPT="n0_n100"
+EXPERIMENT_PREFIX="t3bench/single"
 
 ROOT_DIR="/media/data2/mconti/TT3D"
-OUT_DIR="${ROOT_DIR}/outputs/${PROMPT}"
+OUT_DIR="${ROOT_DIR}/outputs/final/${EXPERIMENT_PREFIX}/${PROMPT}"
 
 
 export TRANSFORMERS_OFFLINE=1
