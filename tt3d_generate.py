@@ -31,9 +31,10 @@ def _build_default_args() -> Tuple[dict, list]:
     }
 
     default_extra_args = [
+        "seed=42",
         "use_timestamp=False",
         "system.prompt_processor.spawn=false",
-        # "seed=42",
+        "trainer.val_check_interval=10000",  ### avoid performing validation
         # "system.cleanup_after_validation_step=true",
         # "system.cleanup_after_test_step=true",
         # "system.prompt_processor.use_perp_neg=true",
@@ -169,11 +170,10 @@ def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
     )
 
 
-def _delete_prompt_embeddings_cache():
-    prompt_embeddings_cache_path = Path(".threestudio_cache/text_embeddings")
-    if prompt_embeddings_cache_path.exists():
-        shutil.rmtree(prompt_embeddings_cache_path)
-
+# def _delete_prompt_embeddings_cache():
+#     prompt_embeddings_cache_path = Path(".threestudio_cache/text_embeddings")
+#     if prompt_embeddings_cache_path.exists():
+#         shutil.rmtree(prompt_embeddings_cache_path)
 
 ###
 
@@ -201,8 +201,6 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
         if not isinstance(prompt, str) or len(prompt) < 2:
             continue
 
-        _delete_prompt_embeddings_cache()
-
         skip_generation = skip_generation_or_delete_existing_model_version(
             skip_existing=skip_existing,
             model=model,
@@ -219,8 +217,6 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
             out_rootpath=out_rootpath,
             train_steps=train_steps,
         )
-
-    _delete_prompt_embeddings_cache()
 
 
 ###
