@@ -38,7 +38,6 @@ def _build_default_args() -> Tuple[dict, list]:
         # "system.cleanup_after_validation_step=true",
         # "system.cleanup_after_test_step=true",
         "system.prompt_processor.use_perp_neg=true",
-        # "system.guidance.enable_sequential_cpu_offload=true",
         # "data.batch_size=1",
     ]
 
