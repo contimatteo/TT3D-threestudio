@@ -35,8 +35,8 @@ def _build_default_args() -> Tuple[dict, list]:
         "use_timestamp=False",
         "system.prompt_processor.spawn=false",
         "trainer.val_check_interval=10000",  ### avoid performing validation
-        # "system.cleanup_after_validation_step=true",
-        # "system.cleanup_after_test_step=true",
+        "system.cleanup_after_validation_step=true",
+        "system.cleanup_after_test_step=true",
         "system.prompt_processor.use_perp_neg=true",
         # "data.batch_size=1",
     ]
@@ -108,12 +108,13 @@ def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_
             train_steps=train_steps,
         )
 
-    if model == "magic3d":
+    if model == "magic3d-sd" or model == "magic3d-if":
         args_configs = Utils.Models.magic3d(
             args_builder_fn=_build_default_args,
             prompt=prompt,
             out_rootpath=out_rootpath,
             train_steps=train_steps,
+            mode="if" if model == "magic3d-if" else "sd",
         )
 
     if model == "textmesh-sd" or model == "textmesh-if":

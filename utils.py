@@ -109,7 +109,9 @@ class _Configs():
         "dreamfusion-if",
         "fantasia3d",
         "prolificdreamer",
-        "magic3d",
+        # "magic3d",
+        "magic3d-sd",
+        "magic3d-if",
         "textmesh-sd",
         "textmesh-if",
         "hifa",
@@ -283,7 +285,7 @@ class _Storage():
         if model == "prolificdreamer":
             return "prolificdreamer-texture"
 
-        if model == "magic3d":
+        if model == "magic3d-sd" or model == "magic3d-if":
             return "magic3d-refine-sd"
 
         if model == "textmesh-sd":
@@ -311,9 +313,10 @@ class _Storage():
         if model == "prolificdreamer":
             return ["prolificdreamer", "prolificdreamer-geometry"]
 
-        if model == "magic3d":
-            # return ["magic3d-coarse-if"]
+        if model == "magic3d-sd":
             return ["magic3d-coarse-sd"]
+        if model == "magic3d-if":
+            return ["magic3d-coarse-if"]
 
         if model == "textmesh-sd" or model == "textmesh-if":
             return []
@@ -517,8 +520,11 @@ class _Models():
         prompt: str,
         out_rootpath: Path,
         train_steps: List[int],
+        mode: Literal["sd", "if"],
     ) -> List[Tuple[dict, list]]:
         assert len(train_steps) == 2
+        assert isinstance(mode, str)
+        assert mode in ["sd", "if"]
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -528,8 +534,11 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        run_args["config"] = "configs/magic3d-coarse-sd.yaml"
-        # run_args["config"] = "configs/magic3d-coarse-if.yaml"
+        if mode == "if":
+            run_args["config"] = "configs/magic3d-coarse-if.yaml"
+        else:
+            run_args["config"] = "configs/magic3d-coarse-sd.yaml"
+
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",

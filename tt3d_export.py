@@ -74,7 +74,7 @@ def _export(
         #     "system.geometry.isosurface_resolution=256",
         # ]
         pass
-    elif model == "magic3d":
+    elif model == "magic3d-sd" or model == "magic3d-if":
         pass
     elif model == "textmesh-sd" or model == "textmesh-if":
         pass
