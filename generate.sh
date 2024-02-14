@@ -71,37 +71,37 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "prolificdreamer" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-  --train-steps="400,400,200" \
+  --train-steps="350,350,300" \
   --skip-existing
 
 ### 
 ### MAGIC-3D
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-##   --model "magic3d-sd" \
-##   --prompt-file $PROMPT_FILE \
-##   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-##   --train-steps="100,100" \
-##   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "magic3d-sd" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+  --train-steps="500,500" \
+  --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="700,300" \
+  --train-steps="500,500" \
   --skip-existing
 
 ### 
 ### TEXT-MESH
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-##   --model "textmesh-sd" \
-##   --prompt-file $PROMPT_FILE \
-##   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-##   --train-steps="1000" \
-##   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "textmesh-sd" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+  --train-steps="1000" \
+  --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh-if" \
@@ -114,6 +114,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### HIFA
 ### 
 
+### INFO: OK
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "hifa" \
 #   --prompt-file $PROMPT_FILE \
