@@ -24,7 +24,7 @@ export HF_HUB_OFFLINE=1
 
 ## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ##   --model "dreamfusion-sd" \
-##   --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
+##   --source-path "${OUT_DIR}/Threestudio-DreamFusion/" \
 ##   --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
