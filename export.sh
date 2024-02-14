@@ -22,10 +22,10 @@ export HF_HUB_OFFLINE=1
 ### DREAMFUSION
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-##   --model "dreamfusion-sd" \
-##   --source-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-##   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+  --model "dreamfusion-sd" \
+  --source-path "${OUT_DIR}/Threestudio-DreamFusion/" \
+  --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "dreamfusion-if" \
@@ -55,10 +55,10 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ### MAGIC-3D
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-##   --model "magic3d-sd" \
-##   --source-path "${OUT_DIR}/Threestudio-Magic3D/" \
-##   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+  --model "magic3d-sd" \
+  --source-path "${OUT_DIR}/Threestudio-Magic3D/" \
+  --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "magic3d-if" \
@@ -69,10 +69,10 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ### TEXT-MESH
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-##   --model "textmesh-sd" \
-##   --source-path "${OUT_DIR}/Threestudio-TextMesh/" \
-##   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+  --model "textmesh-sd" \
+  --source-path "${OUT_DIR}/Threestudio-TextMesh/" \
+  --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "textmesh-if" \
