@@ -55,8 +55,9 @@ def skip_generation_or_delete_existing_model_version(
 
     out_model_final_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
     out_result_final_path = build_result_path_fn(out_model_final_dirname)
+    out_result_ckpts_filepath = out_result_final_path.joinpath("ckpts", "last.ckpt")
 
-    if skip_existing and out_result_final_path.exists():
+    if skip_existing and out_result_ckpts_filepath.exists():
         print("")
         print("========================================")
         print("Path already exists -> ", out_result_final_path)
@@ -64,7 +65,7 @@ def skip_generation_or_delete_existing_model_version(
         print("")
         return True
 
-    if out_result_final_path.exists():
+    if out_result_ckpts_filepath.exists():
         model_dirnames_to_delete = Utils.Storage.get_model_intermediate_dirnames_from_id(model=model)
         model_dirnames_to_delete += [out_model_final_dirname]
         print("")
