@@ -1,5 +1,5 @@
 ### pylint: disable=missing-function-docstring,missing-class-docstring,missing-module-docstring,wrong-import-order
-from typing import Tuple, List, Callable, Literal
+from typing import Tuple, List, Callable, Literal, Optional
 
 import os
 import torch
@@ -109,7 +109,9 @@ class _Configs():
         "dreamfusion-if",
         "fantasia3d",
         "prolificdreamer",
-        "magic3d",
+        # "magic3d",
+        "magic3d-sd",
+        "magic3d-if",
         "textmesh-sd",
         "textmesh-if",
         "hifa",
@@ -150,121 +152,61 @@ class _Storage():
 
         return out_model_prompt_path
 
-    @staticmethod
-    def search_last_result_output_path_over_timestamps(
-        model_dirname: str,
-        prompt: str,
-        out_rootpath: Path,
-    ) -> Path:
-        """
-        There may be multiple subdirs related to the same prompt.
-        This may be caused by multiple runs using the same prompt.
-        We want to find the most recent one.
-        Examples:
-        -  outputs/dreamfusion-sd/a_shark@20231217-110220
-        -  outputs/dreamfusion-sd/a_shark@20240124-120330
-        Moreover we may have multiple subdirs which have in common some parts of the same prompt.
-        Examples (sharing "a shark" prompt part):
-        -  outputs/dreamfusion-sd/a_shark@...
-        -  outputs/dreamfusion-sd/a_big_shark@...
-        -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
-        """
+    @classmethod
+    def build_result_export_path(
+        cls,
+        result_path: Path,
+        assert_exists: bool,
+    ) -> Optional[Path]:
+        result_save_path = result_path.joinpath("save")
 
-        # output_rootdir = Path("outputs")
-        out_model_path = out_rootpath.joinpath(model_dirname)
-
-        assert out_model_path.exists()
-        assert out_model_path.is_dir()
-
-        #
-
-        ### first, try to collect all paths which refers EXACLTY to the {prompt}.
-        results_candidates_dirnames: List[str] = []
-
-        for result_path in out_model_path.iterdir():
-            if not result_path.is_dir():
+        export_candidate_paths: List[Path] = []
+        for export_candidate_path in result_save_path.glob("*export"):
+            if not export_candidate_path.is_dir():
                 continue
+            export_candidate_paths.append(export_candidate_path)
 
-            prompt_enc = Utils.Prompt.encode(prompt=prompt)
-            result_dirname = result_path.name
+        ### INFO: currently we expect to have only one export path.
+        ### Originally, threestudio supports multiple exports, but we do not handle them.
+        ### At the end, we want to have just one export path, but we need to search for it since
+        ### the name od the directory depends on the number of iterations performed during training.
+        if assert_exists:
+            assert len(export_candidate_paths) == 1
 
-            ### {startswith} is not a sufficient condtion, but it's
-            ### a good start to filter out wrong results.
-            ### examples:
-            ###   -  outputs/dreamfusion-sd/a_shark@...
-            ###   -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
-            if not result_dirname.startswith(prompt_enc):
-                continue
-            ### ok now we are sure that the dirname starts with the prompt.
-            ### let's check if it's the exact prompt.
-            if result_dirname.split("@")[0] != prompt_enc:
-                continue
+        if len(export_candidate_paths) == 0:
+            return None
 
-            results_candidates_dirnames.append(result_dirname)
+        out_path = export_candidate_paths[0]
 
-        #
+        if assert_exists:
+            assert out_path.exists()
+            assert out_path.is_dir()
 
-        assert len(results_candidates_dirnames) > 0
+        return out_path
 
-        ### Now we are sure that we have at least one result which refers to the exact prompt.
-        ### The issue now is that we may have multiple results which refers to the exact prompt
-        ### due to multiple runs with different timestamps.
-        ### We have to find the most recent one
-
-        last_datetime_obj: datetime = None
-        last_dirname: str = None
-
-        for result_dirname in results_candidates_dirnames:
-            result_dirname_splits = result_dirname.split("@")
-            prompt_enc = result_dirname_splits[0]  ### "a_shark"
-            datetime_enc = result_dirname_splits[1]  ### "20231217-110220"
-            datetime_obj = datetime.strptime(datetime_enc, '%Y%m%d-%H%M%S')
-
-            if (last_dirname is None) or (datetime_obj > last_datetime_obj):
-                last_datetime_obj = datetime_obj
-                last_dirname = result_dirname
-
-        assert last_dirname is not None
-
-        #
-
-        last_result_path = out_model_path.joinpath(last_dirname)
-
-        assert last_result_path.exists()
-        assert last_result_path.is_dir()
-
-        return last_result_path
-
-    @staticmethod
-    def delete_unnecessary_ckpts(
-        model_dirname: str,
-        prompt: str,
-        out_rootpath: Path,
-    ) -> None:
-        result_path = Utils.Storage.build_result_path_by_prompt(
-            model_dirname=model_dirname,
-            prompt=prompt,
-            out_rootpath=out_rootpath,
-            assert_exists=True,
+    @classmethod
+    def build_result_export_obj_path(
+        cls,
+        result_path: Path,
+        assert_exists: bool,
+    ) -> Optional[Path]:
+        result_export_path = cls.build_result_export_path(
+            result_path=result_path,
+            assert_exists=False,
         )
 
-        ckpts_path = result_path.joinpath("ckpts")
-        assert ckpts_path.exists()
-        assert ckpts_path.is_dir()
-        ### "last.ckpt" is a symlink to the last checkpoint.
-        last_ckpt_path = ckpts_path.joinpath("last.ckpt")
-        assert last_ckpt_path.exists()
-        assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
+        if result_export_path is None:
+            return None
 
-        ckpts_names_to_keep = [
-            "last.ckpt",
-            Path(os.readlink(last_ckpt_path)).name,
-        ]
+        result_export_obj_path = result_export_path.joinpath("model.obj")
 
-        for ckpt_path in ckpts_path.glob("*.ckpt"):
-            if ckpt_path.name in ckpts_names_to_keep:
-                continue
-            ckpt_path.unlink()
+        if assert_exists:
+            assert result_export_obj_path.exists()
+            assert result_export_obj_path.is_file()
+
+        return result_export_obj_path
+
+    #
 
     @staticmethod
     def get_model_final_dirname_from_id(model: str) -> str:
@@ -283,7 +225,7 @@ class _Storage():
         if model == "prolificdreamer":
             return "prolificdreamer-texture"
 
-        if model == "magic3d":
+        if model == "magic3d-sd" or model == "magic3d-if":
             return "magic3d-refine-sd"
 
         if model == "textmesh-sd":
@@ -311,8 +253,9 @@ class _Storage():
         if model == "prolificdreamer":
             return ["prolificdreamer", "prolificdreamer-geometry"]
 
-        if model == "magic3d":
-            # return ["magic3d-coarse-sd"]
+        if model == "magic3d-sd":
+            return ["magic3d-coarse-sd"]
+        if model == "magic3d-if":
             return ["magic3d-coarse-if"]
 
         if model == "textmesh-sd" or model == "textmesh-if":
@@ -322,6 +265,122 @@ class _Storage():
             return []
 
         raise Exception("Model output intermediate dirnames not configured.")
+
+    # @staticmethod
+    # def search_last_result_output_path_over_timestamps(
+    #     model_dirname: str,
+    #     prompt: str,
+    #     out_rootpath: Path,
+    # ) -> Path:
+    #     """
+    #     There may be multiple subdirs related to the same prompt.
+    #     This may be caused by multiple runs using the same prompt.
+    #     We want to find the most recent one.
+    #     Examples:
+    #     -  outputs/dreamfusion-sd/a_shark@20231217-110220
+    #     -  outputs/dreamfusion-sd/a_shark@20240124-120330
+    #     Moreover we may have multiple subdirs which have in common some parts of the same prompt.
+    #     Examples (sharing "a shark" prompt part):
+    #     -  outputs/dreamfusion-sd/a_shark@...
+    #     -  outputs/dreamfusion-sd/a_big_shark@...
+    #     -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
+    #     """
+
+    #     # output_rootdir = Path("outputs")
+    #     out_model_path = out_rootpath.joinpath(model_dirname)
+
+    #     assert out_model_path.exists()
+    #     assert out_model_path.is_dir()
+
+    #     #
+
+    #     ### first, try to collect all paths which refers EXACLTY to the {prompt}.
+    #     results_candidates_dirnames: List[str] = []
+
+    #     for result_path in out_model_path.iterdir():
+    #         if not result_path.is_dir():
+    #             continue
+
+    #         prompt_enc = Utils.Prompt.encode(prompt=prompt)
+    #         result_dirname = result_path.name
+
+    #         ### {startswith} is not a sufficient condtion, but it's
+    #         ### a good start to filter out wrong results.
+    #         ### examples:
+    #         ###   -  outputs/dreamfusion-sd/a_shark@...
+    #         ###   -  outputs/dreamfusion-sd/a_shark_with_red_nose@...
+    #         if not result_dirname.startswith(prompt_enc):
+    #             continue
+    #         ### ok now we are sure that the dirname starts with the prompt.
+    #         ### let's check if it's the exact prompt.
+    #         if result_dirname.split("@")[0] != prompt_enc:
+    #             continue
+
+    #         results_candidates_dirnames.append(result_dirname)
+
+    #     #
+
+    #     assert len(results_candidates_dirnames) > 0
+
+    #     ### Now we are sure that we have at least one result which refers to the exact prompt.
+    #     ### The issue now is that we may have multiple results which refers to the exact prompt
+    #     ### due to multiple runs with different timestamps.
+    #     ### We have to find the most recent one
+
+    #     last_datetime_obj: datetime = None
+    #     last_dirname: str = None
+
+    #     for result_dirname in results_candidates_dirnames:
+    #         result_dirname_splits = result_dirname.split("@")
+    #         prompt_enc = result_dirname_splits[0]  ### "a_shark"
+    #         datetime_enc = result_dirname_splits[1]  ### "20231217-110220"
+    #         datetime_obj = datetime.strptime(datetime_enc, '%Y%m%d-%H%M%S')
+
+    #         if (last_dirname is None) or (datetime_obj > last_datetime_obj):
+    #             last_datetime_obj = datetime_obj
+    #             last_dirname = result_dirname
+
+    #     assert last_dirname is not None
+
+    #     #
+
+    #     last_result_path = out_model_path.joinpath(last_dirname)
+
+    #     assert last_result_path.exists()
+    #     assert last_result_path.is_dir()
+
+    #     return last_result_path
+
+    # @staticmethod
+    # def delete_unnecessary_ckpts(
+    #     model_dirname: str,
+    #     prompt: str,
+    #     out_rootpath: Path,
+    # ) -> None:
+    #     result_path = Utils.Storage.build_result_path_by_prompt(
+    #         model_dirname=model_dirname,
+    #         prompt=prompt,
+    #         out_rootpath=out_rootpath,
+    #         assert_exists=True,
+    #     )
+
+    #     ckpts_path = result_path.joinpath("ckpts")
+    #     assert ckpts_path.exists()
+    #     assert ckpts_path.is_dir()
+    #     ### "last.ckpt" is a symlink to the last checkpoint.
+    #     last_ckpt_path = ckpts_path.joinpath("last.ckpt")
+    #     assert last_ckpt_path.exists()
+    #     assert last_ckpt_path.is_symlink()  ### INFO: notice this ...
+
+    #     ckpts_names_to_keep = [
+    #         "last.ckpt",
+    #         Path(os.readlink(last_ckpt_path)).name,
+    #     ]
+
+    #     for ckpt_path in ckpts_path.glob("*.ckpt"):
+    #         if ckpt_path.name in ckpts_names_to_keep:
+    #             continue
+    #         ckpt_path.unlink()
 
 
 ###
@@ -517,8 +576,11 @@ class _Models():
         prompt: str,
         out_rootpath: Path,
         train_steps: List[int],
+        mode: Literal["sd", "if"],
     ) -> List[Tuple[dict, list]]:
         assert len(train_steps) == 2
+        assert isinstance(mode, str)
+        assert mode in ["sd", "if"]
 
         args_configs: List[Tuple[dict, list]] = []
 
@@ -528,8 +590,9 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        # run_args["config"] = "configs/magic3d-coarse-sd.yaml"
-        run_args["config"] = "configs/magic3d-coarse-if.yaml"
+        config_name = f"magic3d-coarse-{mode}"
+
+        run_args["config"] = f"configs/{config_name}.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
@@ -539,7 +602,9 @@ class _Models():
         args_configs.append((run_args, run_extra_args))
 
         result_path = _Storage.build_result_path_by_prompt(
-            model_dirname="magic3d-coarse-if",
+            # model_dirname="magic3d-coarse-if",
+            # model_dirname="magic3d-coarse-sd",
+            model_dirname=config_name,
             prompt=prompt,
             out_rootpath=out_rootpath,
             assert_exists=False,

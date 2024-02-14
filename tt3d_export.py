@@ -43,7 +43,31 @@ def _build_default_args(goal: Literal["quality", "speed", "tradeoff"]) -> Tuple[
     return default_args, default_extra_args
 
 
-###
+def skip_exporting(
+    skip_existing: bool,
+    result_path: Path,
+) -> bool:
+    # out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
+    # out_result_final_path = Utils.Storage.build_result_path_by_prompt(
+    #     model_dirname=out_model_dirname,
+    #     prompt=prompt,
+    #     out_rootpath=out_rootpath,
+    #     assert_exists=False,
+    # )
+    out_result_obj_filepath = Utils.Storage.build_result_export_obj_path(
+        result_path=result_path,
+        assert_exists=False,
+    )
+
+    if skip_existing and out_result_obj_filepath is not None and out_result_obj_filepath.exists():
+        print("")
+        print("========================================")
+        print("Path already exists -> ", result_path)
+        print("========================================")
+        print("")
+        return True
+
+    return False
 
 
 def _export(
@@ -74,7 +98,7 @@ def _export(
         #     "system.geometry.isosurface_resolution=256",
         # ]
         pass
-    elif model == "magic3d":
+    elif model == "magic3d-sd" or model == "magic3d-if":
         pass
     elif model == "textmesh-sd" or model == "textmesh-if":
         pass
@@ -126,6 +150,7 @@ def main(
     model: str,
     source_rootpath: Path,
     goal: Literal["quality", "speed", "tradeoff"],
+    skip_existing: bool,
 ):
     assert isinstance(model, str)
     assert len(model) > 0
@@ -135,6 +160,7 @@ def main(
     assert source_rootpath.is_dir()
     assert isinstance(goal, str)
     assert goal in ["quality", "speed", "tradeoff"]
+    assert isinstance(skip_existing, bool)
 
     out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
     source_model_rootpath = source_rootpath.joinpath(out_model_dirname)
@@ -144,6 +170,10 @@ def main(
 
     for result_path in source_model_rootpath.iterdir():
         if not result_path.is_dir():
+            continue
+
+        skip_export = skip_exporting(skip_existing=skip_existing, result_path=result_path)
+        if skip_export:
             continue
 
         _export(model=model, result_path=result_path, goal=goal)
@@ -167,8 +197,7 @@ if __name__ == '__main__':
         choices=["quality", "speed", "tradeoff"],
         default="tradeoff",
     )
-    ### TODO: add option to skip existing results.
-    # parser.add_argument("--skip-existing", action="store_true", default=False)
+    parser.add_argument("--skip-existing", action="store_true", default=False)
 
     args = parser.parse_args()
 
@@ -178,4 +207,5 @@ if __name__ == '__main__':
         model=args.model,
         source_rootpath=args.source_path,
         goal=args.goal,
+        skip_existing=args.skip_existing,
     )

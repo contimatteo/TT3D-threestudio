@@ -1,21 +1,37 @@
 ###
 
-exit 0
+# bash exit 1
 
-rm -rf .threestudio_cache/
 
-ROOT_DIR="/media/data2/mconti/TT3D"
-PROMPT_DIR="${ROOT_DIR}/prompts"
-OUT_DIR="${ROOT_DIR}/outputs"
+###############################################################################
+
 
 GPU=0
-PROMPT_FILE="${PROMPT_DIR}/test.t3bench.n10.txt"
+ENV="test"
+PROMPT="n0_n1"
+EXPERIMENT_PREFIX="t3bench/single"
+
+ROOT_DIR="/media/data2/mconti/TT3D"
+OUT_DIR="${ROOT_DIR}/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}"
+PROMPT_FILE="${ROOT_DIR}/prompts/${EXPERIMENT_PREFIX}/${PROMPT}.txt"
+
 
 export TRANSFORMERS_OFFLINE=1
 export HF_DATASETS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 # export HF_HOME="${ROOT_DIR}/cache/huggingface"
 
+
+###############################################################################
+
+
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${ROOT_DIR}/outputs/cache/embeddings/Threestudio/" \
+  --train-steps="1"
+
+
+###############################################################################  
 
 ### 
 ### DREAMFUSION
@@ -25,25 +41,27 @@ export HF_HUB_OFFLINE=1
 #   --model "dreamfusion-sd" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-#   --train-steps="1000"
+#   --train-steps="1000" \
+#   --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "dreamfusion-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-  --train-steps="1000"
-
+  --train-steps="1000" \
+  --skip-existing
 
 ### 
 ### FANTASIA-3D
 ### 
 
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "fantasia3d" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
-  --train-steps="900,100"
-
+### TODO: need to add support for priors shape initialization
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "fantasia3d" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
+#   --train-steps="800,200" \
+#   --skip-existing
 
 ### 
 ### PROFILIC-DREAMER
@@ -53,43 +71,52 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "prolificdreamer" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-  --train-steps="800,100,100"
-
+  --train-steps="400,400,200" \
+  --skip-existing
 
 ### 
 ### MAGIC-3D
 ### 
 
+## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+##   --model "magic3d-sd" \
+##   --prompt-file $PROMPT_FILE \
+##   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+##   --train-steps="100,100" \
+##   --skip-existing
+
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "magic3d" \
+  --model "magic3d-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="900,100"
-
+  --train-steps="700,300" \
+  --skip-existing
 
 ### 
 ### TEXT-MESH
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "textmesh-sd" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-#   --train-steps="1000"
+## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+##   --model "textmesh-sd" \
+##   --prompt-file $PROMPT_FILE \
+##   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+##   --train-steps="1000" \
+##   --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="1000"
-
+  --train-steps="1000" \
+  --skip-existing
 
 ### 
 ### HIFA
 ### 
 
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "hifa" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-HiFA/" \
-  --train-steps="1000"
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "hifa" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
+#   --train-steps="1000" \
+#   --skip-existing
