@@ -72,14 +72,14 @@ system:
   optimizer:
     name: Adam
     args:
-      lr: 0.01
+      lr: 0.05
       betas: [0.9, 0.99]
       eps: 1.e-15
     params:
       geometry:
-        lr: 0.01
+        lr: 0.05
       background:
-        lr: 0.001
+        lr: 0.005
 
 trainer:
   max_steps: 10000

@@ -37,13 +37,15 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 ### DREAMFUSION
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "dreamfusion-sd" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-#   --train-steps="1000" \
-#   --skip-existing
+### INFO: OK
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "dreamfusion-sd" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
+  --train-steps="1000" \
+  --skip-existing
 
+#### TODO: fa schifo?
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "dreamfusion-if" \
   --prompt-file $PROMPT_FILE \
@@ -78,18 +80,19 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### MAGIC-3D
 ### 
 
+### INFO: OK
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d-sd" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="500,500" \
+  --train-steps="600,400" \
   --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="500,500" \
+  --train-steps="600,400" \
   --skip-existing
 
 ### 
@@ -103,6 +106,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --train-steps="1000" \
   --skip-existing
 
+#### INFO: fa schifo?
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh-if" \
   --prompt-file $PROMPT_FILE \
@@ -115,9 +119,9 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### 
 
 ### INFO: OK
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "hifa" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
-#   --train-steps="1000" \
-#   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "hifa" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-HiFA/" \
+  --train-steps="1000" \
+  --skip-existing
