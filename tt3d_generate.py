@@ -33,8 +33,12 @@ def _build_default_args() -> Tuple[dict, list]:
     default_extra_args = [
         "use_timestamp=False",
         "system.prompt_processor.spawn=false",
+        # "seed=42",
         # "system.cleanup_after_validation_step=true",
         # "system.cleanup_after_test_step=true",
+        # "system.prompt_processor.use_perp_neg=true",
+        # "system.guidance.enable_sequential_cpu_offload=true",
+        # "data.batch_size=1",
     ]
 
     return default_args, default_extra_args
