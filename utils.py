@@ -654,11 +654,12 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        if mode == "if":
-            run_args["config"] = "configs/textmesh-if.yaml"
-        else:
-            run_args["config"] = "configs/textmesh-sd.yaml"
+        # if mode == "if":
+        #     run_args["config"] = "configs/textmesh-if.yaml"
+        # else:
+        #     run_args["config"] = "configs/textmesh-sd.yaml"
 
+        run_args["config"] = f"configs/textmesh-{mode}.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
