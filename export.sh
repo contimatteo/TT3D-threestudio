@@ -53,8 +53,13 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ### MAGIC-3D
 ### 
 
+## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+##   --model "magic3d-sd" \
+##   --source-path "${OUT_DIR}/Threestudio-Magic3D/" \
+##   --skip-existing
+
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
-  --model "magic3d" \
+  --model "magic3d-if" \
   --source-path "${OUT_DIR}/Threestudio-Magic3D/" \
   --skip-existing
 
