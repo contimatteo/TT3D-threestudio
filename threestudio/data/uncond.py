@@ -36,7 +36,7 @@ class RandomCameraDataModuleConfig:
     eval_width: int = 512
     eval_batch_size: int = 1
     n_val_views: int = 1
-    n_test_views: int = 120
+    n_test_views: int = 12 # 120
     elevation_range: Tuple[float, float] = (-10, 90)
     azimuth_range: Tuple[float, float] = (-180, 180)
     camera_distance_range: Tuple[float, float] = (1, 1.5)
