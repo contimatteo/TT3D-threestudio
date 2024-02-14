@@ -1,5 +1,5 @@
 ### pylint: disable=missing-function-docstring,missing-class-docstring,missing-module-docstring,wrong-import-order
-from typing import Tuple, List, Callable, Literal
+from typing import Tuple, List, Callable, Literal, Optional
 
 import os
 import torch
@@ -157,7 +157,7 @@ class _Storage():
         cls,
         result_path: Path,
         assert_exists: bool,
-    ) -> Path:
+    ) -> Optional[Path]:
         result_save_path = result_path.joinpath("save")
 
         export_candidate_paths: List[Path] = []
@@ -170,7 +170,11 @@ class _Storage():
         ### Originally, threestudio supports multiple exports, but we do not handle them.
         ### At the end, we want to have just one export path, but we need to search for it since
         ### the name od the directory depends on the number of iterations performed during training.
-        assert len(export_candidate_paths) == 1
+        if assert_exists:
+            assert len(export_candidate_paths) == 1
+
+        if len(export_candidate_paths) == 0:
+            return None
 
         out_path = export_candidate_paths[0]
 
@@ -185,11 +189,14 @@ class _Storage():
         cls,
         result_path: Path,
         assert_exists: bool,
-    ) -> Path:
+    ) -> Optional[Path]:
         result_export_path = cls.build_result_export_path(
             result_path=result_path,
             assert_exists=False,
         )
+
+        if result_export_path is None:
+            return None
 
         result_export_obj_path = result_export_path.joinpath("model.obj")
 

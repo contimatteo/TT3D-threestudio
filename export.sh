@@ -4,11 +4,12 @@
 
 
 GPU=0
-PROMPT="n0_n100"
+ENV="test"
+PROMPT="n0_n1"
 EXPERIMENT_PREFIX="t3bench/single"
 
 ROOT_DIR="/media/data2/mconti/TT3D"
-OUT_DIR="${ROOT_DIR}/outputs/final/${EXPERIMENT_PREFIX}/${PROMPT}"
+OUT_DIR="${ROOT_DIR}/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}"
 
 
 export TRANSFORMERS_OFFLINE=1

@@ -59,7 +59,7 @@ def skip_exporting(
         assert_exists=False,
     )
 
-    if skip_existing and out_result_obj_filepath.exists():
+    if skip_existing and out_result_obj_filepath is not None and out_result_obj_filepath.exists():
         print("")
         print("========================================")
         print("Path already exists -> ", result_path)

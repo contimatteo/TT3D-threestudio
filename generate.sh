@@ -7,11 +7,12 @@
 
 
 GPU=0
-PROMPT="n0_n100"
+ENV="test"
+PROMPT="n0_n1"
 EXPERIMENT_PREFIX="t3bench/single"
 
 ROOT_DIR="/media/data2/mconti/TT3D"
-OUT_DIR="${ROOT_DIR}/outputs/final/${EXPERIMENT_PREFIX}/${PROMPT}"
+OUT_DIR="${ROOT_DIR}/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}"
 PROMPT_FILE="${ROOT_DIR}/prompts/${EXPERIMENT_PREFIX}/${PROMPT}.txt"
 
 
@@ -66,23 +67,30 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### PROFILIC-DREAMER
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "prolificdreamer" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-#   --train-steps="400,400,200" \
-#   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "prolificdreamer" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
+  --train-steps="400,400,200" \
+  --skip-existing
 
 ### 
 ### MAGIC-3D
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "magic3d" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-#   --train-steps="600,400" \
-#   --skip-existing
+## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+##   --model "magic3d-sd" \
+##   --prompt-file $PROMPT_FILE \
+##   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+##   --train-steps="100,100" \
+##   --skip-existing
+
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "magic3d-if" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+  --train-steps="700,300" \
+  --skip-existing
 
 ### 
 ### TEXT-MESH
