@@ -43,6 +43,34 @@ def _build_default_args(goal: Literal["quality", "speed", "tradeoff"]) -> Tuple[
     return default_args, default_extra_args
 
 
+def skip_exporting(
+    skip_existing: bool,
+    result_path: Path,
+    out_rootpath: Path,
+) -> bool:
+    # out_model_dirname = Utils.Storage.get_model_final_dirname_from_id(model=model)
+    # out_result_final_path = Utils.Storage.build_result_path_by_prompt(
+    #     model_dirname=out_model_dirname,
+    #     prompt=prompt,
+    #     out_rootpath=out_rootpath,
+    #     assert_exists=False,
+    # )
+    out_result_obj_filepath = Utils.Storage.build_result_export_obj_path(
+        result_path=result_path,
+        assert_exists=False,
+    )
+
+    if skip_existing and out_result_obj_filepath.exists():
+        print("")
+        print("========================================")
+        print("Path already exists -> ", result_path)
+        print("========================================")
+        print("")
+        return True
+
+    return False
+
+
 def _export(
     model: str,
     result_path: Path,
@@ -143,6 +171,15 @@ def main(
 
     for result_path in source_model_rootpath.iterdir():
         if not result_path.is_dir():
+            continue
+
+        skip_export = skip_exporting(
+            skip_existing=skip_existing,
+            result_path=result_path,
+            source_rootpath=source_rootpath,
+        )
+
+        if skip_export:
             continue
 
         _export(model=model, result_path=result_path, goal=goal)
