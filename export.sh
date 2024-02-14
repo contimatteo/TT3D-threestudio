@@ -23,10 +23,12 @@ export HF_HUB_OFFLINE=1
 ## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ##   --model "dreamfusion-sd" \
 ##   --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
+##   --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "dreamfusion-if" \
-  --source-path "${OUT_DIR}/Threestudio-DreamFusion/"
+  --source-path "${OUT_DIR}/Threestudio-DreamFusion/" \
+  --skip-existing
 
 ### 
 ### FANTASIA-3D
@@ -35,7 +37,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ### TODO: uncomment this when support for priors shape initialization is added
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 #   --model "fantasia3d" \
-#   --source-path "${OUT_DIR}/Threestudio-Fantasia3D/"
+#   --source-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
+#   --skip-existing
 
 ### 
 ### PROFILIC-DREAMER
@@ -43,7 +46,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "prolificdreamer" \
-  --source-path "${OUT_DIR}/Threestudio-ProlificDreamer/"
+  --source-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
+  --skip-existing
 
 ### 
 ### MAGIC-3D
@@ -51,7 +55,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "magic3d" \
-  --source-path "${OUT_DIR}/Threestudio-Magic3D/"
+  --source-path "${OUT_DIR}/Threestudio-Magic3D/" \
+  --skip-existing
 
 ### 
 ### TEXT-MESH
@@ -59,11 +64,13 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 
 ## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ##   --model "textmesh-sd" \
-##   --source-path "${OUT_DIR}/Threestudio-TextMesh/"
+##   --source-path "${OUT_DIR}/Threestudio-TextMesh/" \
+##   --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "textmesh-if" \
-  --source-path "${OUT_DIR}/Threestudio-TextMesh/"
+  --source-path "${OUT_DIR}/Threestudio-TextMesh/" \
+  --skip-existing
 
 ### 
 ### HIFA
@@ -71,4 +78,5 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
   --model "hifa" \
-  --source-path "${OUT_DIR}/Threestudio-HiFA/"
+  --source-path "${OUT_DIR}/Threestudio-HiFA/" \
+  --skip-existing
