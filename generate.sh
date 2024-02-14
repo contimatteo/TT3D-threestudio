@@ -3,6 +3,9 @@
 exit 1
 
 
+###############################################################################
+
+
 GPU=0
 PROMPT="test_t3bench_n1"
 
@@ -16,6 +19,17 @@ export HF_DATASETS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 # export HF_HOME="${ROOT_DIR}/cache/huggingface"
 
+
+###############################################################################
+
+
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${ROOT_DIR}/outputs/cache/embeddings/Threestudio/" \
+  --train-steps="5"
+
+
+###############################################################################  
 
 ### 
 ### DREAMFUSION
