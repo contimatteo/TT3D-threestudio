@@ -225,8 +225,10 @@ class _Storage():
         if model == "prolificdreamer":
             return "prolificdreamer-texture"
 
-        if model == "magic3d-sd" or model == "magic3d-if":
+        if model == "magic3d-sd":
             return "magic3d-refine-sd"
+        if model == "magic3d-if":
+            return "magic3d-refine-if"
 
         if model == "textmesh-sd":
             return "textmesh-sd"
@@ -616,7 +618,8 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        run_args["config"] = "configs/magic3d-refine-sd.yaml"
+        # run_args["config"] = "configs/magic3d-refine-sd.yaml"
+        run_args["config"] = f"configs/magic3d-refine-{mode}.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
