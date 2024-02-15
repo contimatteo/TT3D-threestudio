@@ -223,6 +223,7 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
             print("")
             print("========================================")
             print("Error while running model -> ", model)
+            print("Error while running prompt -> ", prompt)
             print(e)
             print("========================================")
             print("")
