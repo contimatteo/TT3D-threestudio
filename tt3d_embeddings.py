@@ -18,6 +18,7 @@ from threestudio.models.prompt_processors.base import hash_prompt
 _ = Utils.Cuda.init()
 
 DEEPFLOYD_MODEL_NAME = "DeepFloyd/IF-I-XL-v1.0"
+STABLEDIFFUSION_MODEL_NAME = "stabilityai/stable-diffusion-2-1-base"
 
 ###
 
@@ -78,20 +79,47 @@ def _generate_deepfloyd_embeddings(
         train_steps=train_steps,
         mode="if",
     )
-    # args_configs += Utils.Models.magic3d(
-    #     args_builder_fn=_build_default_args,
-    #     prompt=prompt,
-    #     out_rootpath=out_rootpath,
-    #     train_steps=train_steps,
-    #     mode="if",
-    # )
-    # args_configs += Utils.Models.textmesh(
-    #     args_builder_fn=_build_default_args,
-    #     prompt=prompt,
-    #     out_rootpath=out_rootpath,
-    #     train_steps=train_steps,
-    #     mode="if",
-    # )
+
+    #
+
+    assert len(args_configs) > 0
+
+    for args_config in args_configs:
+        run_args, run_extra_args = args_config
+        __run_launch_script(run_args=run_args, run_extra_args=run_extra_args)
+
+
+def _generate_stablediffusion_embeddings(
+    prompt: str,
+    out_rootpath: Path,
+    train_steps: List[int],
+    skip_existing: bool,
+) -> None:
+    prompt_hashed = hash_prompt(model=STABLEDIFFUSION_MODEL_NAME, prompt=prompt)
+    prompt_hashed_filepath = Path(".").joinpath(
+        ".threestudio_cache/text_embeddings",
+        f"{prompt_hashed}.pt",
+    )
+
+    if skip_existing and prompt_hashed_filepath.exists():
+        print("")
+        print("========================================")
+        print("Embedding already exists -> ", prompt_hashed_filepath)
+        print("========================================")
+        print("")
+        return
+
+    #
+
+    args_configs: List[Tuple[dict, list]] = []
+
+    args_configs += Utils.Models.dreamfusion(
+        args_builder_fn=_build_default_args,
+        prompt=prompt,
+        out_rootpath=out_rootpath,
+        train_steps=train_steps,
+        mode="sd",
+    )
 
     #
 
@@ -159,6 +187,13 @@ def main(
             continue
 
         _generate_deepfloyd_embeddings(
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+            skip_existing=skip_existing,
+        )
+
+        _generate_stablediffusion_embeddings(
             prompt=prompt,
             out_rootpath=out_rootpath,
             train_steps=train_steps,

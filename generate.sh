@@ -1,6 +1,6 @@
 ###
 
-# bash exit 1
+exit 1
 
 
 ###############################################################################
@@ -37,18 +37,20 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 ### DREAMFUSION
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "dreamfusion-sd" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-#   --train-steps="1000" \
-#   --skip-existing
+### INFO: OK
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "dreamfusion-sd" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
+  --train-steps="2650" \
+  --skip-existing
 
+#### TODO: fa schifo?
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "dreamfusion-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-  --train-steps="1000" \
+  --train-steps="3500" \
   --skip-existing
 
 ### 
@@ -60,7 +62,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "fantasia3d" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
-#   --train-steps="800,200" \
+#   --train-steps="1800,1350" \
 #   --skip-existing
 
 ### 
@@ -71,52 +73,55 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "prolificdreamer" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-  --train-steps="400,400,200" \
+  --train-steps="650,800,500" \
   --skip-existing
 
 ### 
 ### MAGIC-3D
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-##   --model "magic3d-sd" \
-##   --prompt-file $PROMPT_FILE \
-##   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-##   --train-steps="100,100" \
-##   --skip-existing
+### INFO: OK
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "magic3d-sd" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+  --train-steps="1300,1300" \
+  --skip-existing
 
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="700,300" \
+  --train-steps="1700,1300" \
   --skip-existing
 
 ### 
 ### TEXT-MESH
 ### 
 
-## CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-##   --model "textmesh-sd" \
-##   --prompt-file $PROMPT_FILE \
-##   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-##   --train-steps="1000" \
-##   --skip-existing
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "textmesh-sd" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+  --train-steps="2500" \
+  --skip-existing
 
+#### INFO: fa schifo?
 CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="1000" \
+  --train-steps="3500" \
   --skip-existing
 
 ### 
 ### HIFA
 ### 
 
-# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-#   --model "hifa" \
-#   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
-#   --train-steps="1000" \
-#   --skip-existing
+### INFO: OK
+CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+  --model "hifa" \
+  --prompt-file $PROMPT_FILE \
+  --out-path "${OUT_DIR}/Threestudio-HiFA/" \
+  --train-steps="2650" \
+  --skip-existing

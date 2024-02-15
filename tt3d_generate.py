@@ -37,7 +37,7 @@ def _build_default_args() -> Tuple[dict, list]:
         "trainer.val_check_interval=10000",  ### avoid performing validation
         "system.cleanup_after_validation_step=true",
         "system.cleanup_after_test_step=true",
-        "system.guidance.enable_attention_slicing=true",
+        # "system.guidance.enable_attention_slicing=true",
         # "system.prompt_processor.use_perp_neg=true",
     ]
 
@@ -211,12 +211,24 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
         if skip_generation:
             continue
 
-        _configure_and_run_model(
-            model=model,
-            prompt=prompt,
-            out_rootpath=out_rootpath,
-            train_steps=train_steps,
-        )
+        try:
+            _configure_and_run_model(
+                model=model,
+                prompt=prompt,
+                out_rootpath=out_rootpath,
+                train_steps=train_steps,
+            )
+        except Exception as e:
+            print("")
+            print("")
+            print("========================================")
+            print("Error while running model -> ", model)
+            print("Error while running prompt -> ", prompt)
+            print(e)
+            print("========================================")
+            print("")
+            print("")
+            continue
 
 
 ###

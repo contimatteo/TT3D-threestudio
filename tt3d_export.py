@@ -176,7 +176,18 @@ def main(
         if skip_export:
             continue
 
-        _export(model=model, result_path=result_path, goal=goal)
+        try:
+            _export(model=model, result_path=result_path, goal=goal)
+        except Exception as e:
+            print("")
+            print("")
+            print("========================================")
+            print("Error while running model -> ", model)
+            print(e)
+            print("========================================")
+            print("")
+            print("")
+            continue
 
 
 ###
