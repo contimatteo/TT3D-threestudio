@@ -37,7 +37,7 @@ def _build_default_args() -> Tuple[dict, list]:
         "trainer.val_check_interval=10000",  ### avoid performing validation
         "system.cleanup_after_validation_step=true",
         "system.cleanup_after_test_step=true",
-        "system.guidance.enable_attention_slicing=true",
+        # "system.guidance.enable_attention_slicing=true",
         # "system.prompt_processor.use_perp_neg=true",
     ]
 
