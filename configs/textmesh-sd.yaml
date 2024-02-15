@@ -92,15 +92,15 @@ system:
       eps: 1.e-15
     params:
       geometry.encoding:
-        lr: 0.1
+        lr: 0.01
       geometry.sdf_network:
-        lr: 0.01
+        lr: 0.001
       geometry.feature_network:
-        lr: 0.01
+        lr: 0.001
       background:
-        lr: 0.01
+        lr: 0.001
       renderer:
-        lr: 0.01
+        lr: 0.001
 
 trainer:
   max_steps: 10000
