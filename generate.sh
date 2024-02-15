@@ -42,7 +42,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "dreamfusion-sd" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-  --train-steps="2600" \
+  --train-steps="2650" \
   --skip-existing
 
 #### TODO: fa schifo?
@@ -92,7 +92,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "magic3d-if" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="1650,1300" \
+  --train-steps="1700,1300" \
   --skip-existing
 
 ### 
@@ -103,7 +103,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "textmesh-sd" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="2300" \
+  --train-steps="2500" \
   --skip-existing
 
 #### INFO: fa schifo?
@@ -123,5 +123,5 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
   --model "hifa" \
   --prompt-file $PROMPT_FILE \
   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
-  --train-steps="2600" \
+  --train-steps="2650" \
   --skip-existing
