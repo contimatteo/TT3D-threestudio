@@ -219,6 +219,14 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
                 train_steps=train_steps,
             )
         except Exception as e:
+            print("")
+            print("")
+            print("========================================")
+            print("Error while running model -> ", model)
+            print(e)
+            print("========================================")
+            print("")
+            print("")
             continue
 
 
