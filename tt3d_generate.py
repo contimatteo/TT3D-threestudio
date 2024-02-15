@@ -211,12 +211,15 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
         if skip_generation:
             continue
 
-        _configure_and_run_model(
-            model=model,
-            prompt=prompt,
-            out_rootpath=out_rootpath,
-            train_steps=train_steps,
-        )
+        try:
+            _configure_and_run_model(
+                model=model,
+                prompt=prompt,
+                out_rootpath=out_rootpath,
+                train_steps=train_steps,
+            )
+        except Exception as e:
+            continue
 
 
 ###
