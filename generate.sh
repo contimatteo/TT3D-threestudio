@@ -6,9 +6,9 @@ exit 1
 ###############################################################################
 
 
-GPU=0
-ENV="test"
-PROMPT="n0_n1"
+GPU=1
+ENV="report"
+PROMPT="n100"
 EXPERIMENT_PREFIX="t3bench/single"
 
 ROOT_DIR="/media/data2/mconti/TT3D"
@@ -39,20 +39,20 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 ### 
 
 ### INFO: OK
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "dreamfusion-sd" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-  --train-steps="2650" \
-  --skip-existing
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "dreamfusion-sd" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
+#   --train-steps="2650" \
+#   --skip-existing
 
-#### TODO: fa schifo?
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "dreamfusion-if" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
-  --train-steps="3500" \
-  --skip-existing
+### INFO: OK
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "dreamfusion-if" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-DreamFusion/" \
+#   --train-steps="3500" \
+#   --skip-existing
 
 ### 
 ### FANTASIA-3D
@@ -70,59 +70,62 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ### PROFILIC-DREAMER
 ### 
 
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "prolificdreamer" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
-  --train-steps="650,800,500" \
-  --skip-existing
+### TODO: learning-rate to be fixed
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "prolificdreamer" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
+#   --train-steps="650,800,500" \
+#   --skip-existing
 
 ### 
 ### MAGIC-3D
 ### 
 
 ### INFO: OK
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "magic3d-sd" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="1300,1300" \
-  --skip-existing
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "magic3d-sd" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+#   --train-steps="1300,1300" \
+#   --skip-existing
 
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "magic3d-if" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
-  --train-steps="1700,1300" \
-  --skip-existing
+### INFO: OK
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "magic3d-if" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-Magic3D/" \
+#   --train-steps="1700,1300" \
+#   --skip-existing
 
 ### 
 ### TEXT-MESH
 ### 
 
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "textmesh-sd" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="2500" \
-  --skip-existing
+### TODO: need to add support for priors shape initialization
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "textmesh-sd" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+#   --train-steps="2500" \
+#   --skip-existing
 
-#### INFO: fa schifo?
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "textmesh-if" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-  --train-steps="3500" \
-  --skip-existing
+### TODO: need to add support for priors shape initialization
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "textmesh-if" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+#   --train-steps="3500" \
+#   --skip-existing
 
 ### 
 ### HIFA
 ### 
 
 ### INFO: OK
-CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
-  --model "hifa" \
-  --prompt-file $PROMPT_FILE \
-  --out-path "${OUT_DIR}/Threestudio-HiFA/" \
-  --train-steps="2650" \
-  --skip-existing
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "hifa" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
+#   --train-steps="2650" \
+#   --skip-existing
