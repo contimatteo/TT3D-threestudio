@@ -13,6 +13,7 @@ OUT_DIR="${ROOT_DIR}/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}"
 
 
 export TRANSFORMERS_OFFLINE=1
+export DIFFUSERS_OFFLINE=1
 export HF_DATASETS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 # export HF_HOME="${ROOT_DIR}/cache/huggingface"

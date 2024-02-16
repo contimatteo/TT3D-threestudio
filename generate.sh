@@ -17,6 +17,7 @@ PROMPT_FILE="${ROOT_DIR}/prompts/${EXPERIMENT_PREFIX}/${PROMPT}.txt"
 
 
 export TRANSFORMERS_OFFLINE=1
+export DIFFUSERS_OFFLINE=1
 export HF_DATASETS_OFFLINE=1
 export HF_HUB_OFFLINE=1
 # export HF_HOME="${ROOT_DIR}/cache/huggingface"
