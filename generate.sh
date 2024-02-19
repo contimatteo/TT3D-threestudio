@@ -78,6 +78,14 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --train-steps="650,800,500" \
 #   --skip-existing
 
+# ### TODO: learning-rate to be fixed
+### CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+###   --model "prolificdreamer" \
+###   --prompt-file $PROMPT_FILE \
+###   --out-path "${OUT_DIR}/Threestudio-ProlificDreamer/" \
+###   --train-steps="950,550,300" \
+###   --skip-existing
+
 ### 
 ### MAGIC-3D
 ### 
