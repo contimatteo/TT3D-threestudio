@@ -407,6 +407,44 @@ class _Storage():
 class _Models():
 
     @staticmethod
+    def _extract_args_from_priors(prompt_config: Optional[dict] = None) -> List[str]:
+        ### default value
+        if prompt_config is None:
+            return ["sdf_bias=sphere", "sdf_bias_params=0.5"]
+
+        #
+
+        run_extra_args: List[str] = []
+
+        assert "sdf_bias" in prompt_config
+        assert "sdf_bias_params" in prompt_config
+        sdf_bias = prompt_config["sdf_bias"]
+        sdf_bias_params = prompt_config["sdf_bias_params"]
+
+        ### sdf_bias
+        assert isinstance(sdf_bias, str)
+        assert sdf_bias in ["sphere", "ellipsoid"]
+        run_extra_args += [f"sdf_bias={sdf_bias}"]
+
+        ### sdf_bias_params
+        if sdf_bias == "sphere":
+            assert isinstance(sdf_bias_params, float)
+            assert 0 <= sdf_bias_params <= 1
+            run_extra_args += [f"sdf_bias_params={str(sdf_bias_params)}"]
+        ### sdf_bias_params
+        if sdf_bias == "ellipsoid":
+            assert isinstance(sdf_bias_params, list)
+            assert len(sdf_bias_params) == 3
+            assert all((isinstance(p, float) for p in sdf_bias_params))
+            assert all((0 <= p <= 1 for p in sdf_bias_params))
+            sdf_bias_params_str = ",".join(map(str, sdf_bias_params))
+            run_extra_args += [f'sdf_bias_params="{sdf_bias_params_str}"']
+
+        return run_extra_args
+
+    #
+
+    @staticmethod
     def dreamfusion(
         args_builder_fn: Callable[[], Tuple[dict, list]],
         prompt: str,
@@ -478,34 +516,35 @@ class _Models():
 
         #
 
-        if prompt_config is None:
-            ### default value
-            run_extra_args += ["sdf_bias=sphere", "sdf_bias_params=0.5"]
-        else:
-            assert "sdf_bias" in prompt_config
-            sdf_bias = prompt_config["sdf_bias"]
-            assert isinstance(sdf_bias, str)
-            assert sdf_bias in ["sphere", "ellipsoid"]
-            run_extra_args += [
-                f"sdf_bias={sdf_bias}",
-            ]
-            assert "sdf_bias_params" in prompt_config
-            sdf_bias_params = prompt_config["sdf_bias_params"]
-            if sdf_bias == "sphere":
-                assert isinstance(sdf_bias_params, float)
-                assert 0 <= sdf_bias_params <= 1
-                run_extra_args += [
-                    f"sdf_bias_params={str(sdf_bias_params)}",
-                ]
-            if sdf_bias == "ellipsoid":
-                assert isinstance(sdf_bias_params, list)
-                assert len(sdf_bias_params) == 3
-                assert all((isinstance(p, float) for p in sdf_bias_params))
-                assert all((0 <= p <= 1 for p in sdf_bias_params))
-                sdf_bias_params_str = ",".join(map(str, sdf_bias_params))
-                run_extra_args += [
-                    f'sdf_bias_params="{sdf_bias_params_str}"',
-                ]
+        # if prompt_config is None:
+        #     ### default value
+        #     run_extra_args += ["sdf_bias=sphere", "sdf_bias_params=0.5"]
+        # else:
+        #     assert "sdf_bias" in prompt_config
+        #     sdf_bias = prompt_config["sdf_bias"]
+        #     assert isinstance(sdf_bias, str)
+        #     assert sdf_bias in ["sphere", "ellipsoid"]
+        #     run_extra_args += [
+        #         f"sdf_bias={sdf_bias}",
+        #     ]
+        #     assert "sdf_bias_params" in prompt_config
+        #     sdf_bias_params = prompt_config["sdf_bias_params"]
+        #     if sdf_bias == "sphere":
+        #         assert isinstance(sdf_bias_params, float)
+        #         assert 0 <= sdf_bias_params <= 1
+        #         run_extra_args += [
+        #             f"sdf_bias_params={str(sdf_bias_params)}",
+        #         ]
+        #     if sdf_bias == "ellipsoid":
+        #         assert isinstance(sdf_bias_params, list)
+        #         assert len(sdf_bias_params) == 3
+        #         assert all((isinstance(p, float) for p in sdf_bias_params))
+        #         assert all((0 <= p <= 1 for p in sdf_bias_params))
+        #         sdf_bias_params_str = ",".join(map(str, sdf_bias_params))
+        #         run_extra_args += [
+        #             f'sdf_bias_params="{sdf_bias_params_str}"',
+        #         ]
+        run_extra_args += _Models._extract_args_from_priors(prompt_config=prompt_config)
 
         #
 
@@ -705,17 +744,14 @@ class _Models():
 
         run_args, run_extra_args = args_builder_fn()
 
-        # if mode == "if":
-        #     run_args["config"] = "configs/textmesh-if.yaml"
-        # else:
-        #     run_args["config"] = "configs/textmesh-sd.yaml"
-
         run_args["config"] = f"configs/textmesh-{mode}.yaml"
         run_extra_args += [
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps[0]}",
         ]
+
+        run_extra_args += _Models._extract_args_from_priors(prompt_config=prompt_config)
 
         args_configs.append((run_args, run_extra_args))
 
