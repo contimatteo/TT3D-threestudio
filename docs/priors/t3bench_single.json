@@ -213,175 +213,175 @@
   },
   "A_shimmering_emerald_pendant_necklace": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.7, 0.2]
   },
   "A_shiny,_new_electric_guitar": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.2]
   },
   "A_shiny_emerald_green_beetle": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.3]
   },
   "A_shiny_red_apple": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "A_silver_mirror_with_ornate_detailing": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.6, 0.4]
   },
   "A_simple_burgundy_colored_feather_quill": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.1, 0.8, 0.1]
   },
   "A_sleek,_black_top_hat": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "A_sleek,_slim_smartphone": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.2]
   },
   "A_sleek_stainless_steel_teapot": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.6, 0.4]
   },
   "A_small_porcelain_white_rabbit_figurine": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.4]
   },
   "A_smooth,_round_opal_stone": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "A_sparkling_crystal_chandelier": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.3, 0.8, 0.3]
   },
   "A_sparkling_diamond_ring_in_a_velvet_box": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "A_sparkling_diamond_tiara": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.2, 0.6, 0.2]
   },
   "A_steaming_mug_of_hot_chocolate_with_whipped_cream": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.4]
   },
   "A_sturdy_mahogany_walking_cane": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.1, 0.9, 0.1]
   },
   "A_tarnished_brass_pocket_watch": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.1]
   },
   "A_tarnished_silver_letter_opener": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.1]
   },
   "A_tattered_old_explorer’s_map": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.8, 0.4, 0.1]
   },
   "A_tattered_world_map_with_stained_edges": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "A_thick,_green-spined_book_with_yellowed_pages": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.2]
   },
   "A_velvet_cushion_stitched_with_golden_threads": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.4]
   },
   "A_vibrant,_handmade_patchwork_quilt": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.1]
   },
   "A_vibrant_sunflower_with_green_leaves": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.8, 0.8, 0.2]
   },
   "A_vintage_iron-cast_typewriter": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.4, 0.4]
   },
   "A_vintage_plaid_woolen_blanket": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.2]
   },
   "A_vintage_porcelain_doll_with_a_frilly_dress": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.2]
   },
   "A_water-streaked_glass_window_pane": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.1]
   },
   "A_weather-beaten_wooden_bat": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.1, 0.9, 0.1]
   },
   "A_well-loved_stuffed_teddy_bear": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.8, 0.3]
   },
   "A_well-used_black_iron_frying_pan": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.3]
   },
   "A_well-worn_straw_sun_hat": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.3, 0.6]
   },
   "A_wet,_vibrant_beach_ball": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "A_worn-out_leather_briefcase": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.8, 0.8, 0.2]
   },
   "A_worn-out_red_flannel_shirt": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.2]
   },
   "A_worn-out_rubber_tire_swing": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "An_antique_glass_perfume_bottle": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.4]
   },
   "An_antique_gold_pocket_watch": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.2]
   },
   "An_antique_ruby-studded_brooch": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "An_antique_wooden_rocking_horse": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.4, 0.8, 0.4]
   },
   "An_elegant_feather-quill_ink_pen": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.2, 0.8, 0.2]
   },
   "An_intricate_ceramic_vase_with_peonies_painted_on_it": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.3, 0.6, 0.3]
   },
   "An_intricately-carved_wooden_chess_set": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   },
   "An_ivory_candlestick_holder": {
     "sdf_bias": "ellipsoid",
@@ -389,14 +389,14 @@
   },
   "An_old,_frayed_straw_hat": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.3, 0.6]
   },
   "An_old_bronze_ship's_wheel": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.6, 0.6, 0.2]
   },
   "Crisp,_folded_origami_paper": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": []
+    "sdf_bias_params": [0.5, 0.5, 0.5]
   }
 }
