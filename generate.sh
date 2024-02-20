@@ -70,7 +70,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 ### PROFILIC-DREAMER
 ### 
 
-### TODO: learning-rate to be fixed
+### INFO: OK
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "prolificdreamer" \
 #   --prompt-file $PROMPT_FILE \
@@ -78,7 +78,6 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --train-steps="650,800,500" \
 #   --skip-existing
 
-# ### TODO: learning-rate to be fixed
 ### CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 ###   --model "prolificdreamer" \
 ###   --prompt-file $PROMPT_FILE \

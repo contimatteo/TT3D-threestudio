@@ -6,6 +6,8 @@ import os
 import shutil
 import torch
 import time
+import warnings
+import traceback
 
 from copy import deepcopy
 from pathlib import Path
@@ -82,7 +84,36 @@ def skip_generation_or_delete_existing_model_version(
     return False
 
 
-def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_steps: List[int]) -> None:
+def _configure_and_run_model(
+    model: str,
+    prompt: str,
+    out_rootpath: Path,
+    train_steps: List[int],
+    use_priors: bool,
+    prompt_config: Optional[dict] = None,
+) -> None:
+    assert prompt_config is None or isinstance(prompt_config, dict)
+
+    #
+
+    if use_priors and prompt_config is None:
+        print("")
+        warnings.warn(f"Priors are enabled but no priors config was provided for '{prompt}'.")
+        print("")
+    if not use_priors and prompt_config is not None:
+        print("")
+        warnings.warn(f"Priors are disabled but a priors config was provided for '{prompt}'.")
+        print("")
+
+    if use_priors:
+        assert model in ["fantasia3d", "textmesh-sd", "textmesh-if"]
+    else:
+        prompt_config = None
+
+    assert not (use_priors and prompt_config is None)
+
+    #
+
     args_configs: List[Tuple[dict, list]] = None
 
     if model == "dreamfusion-sd" or model == "dreamfusion-if":
@@ -100,6 +131,7 @@ def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_
             prompt=prompt,
             out_rootpath=out_rootpath,
             train_steps=train_steps,
+            prompt_config=prompt_config,
         )
 
     if model == "prolificdreamer":
@@ -126,6 +158,7 @@ def _configure_and_run_model(model: str, prompt: str, out_rootpath: Path, train_
             out_rootpath=out_rootpath,
             train_steps=train_steps,
             mode="if" if model == "textmesh-if" else "sd",
+            prompt_config=prompt_config,
         )
 
     if model == "hifa":
@@ -186,7 +219,14 @@ def __run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
 ###
 
 
-def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: List[int], skip_existing: bool):
+def main(
+    model: str,
+    prompt_filepath: Path,
+    out_rootpath: Path,
+    train_steps: List[int],
+    use_priors: bool,
+    skip_existing: bool,
+):
     assert isinstance(model, str)
     assert len(model) > 0
     assert model in Utils.Configs.MODELS_SUPPORTED
@@ -194,6 +234,7 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
     assert isinstance(train_steps, list)
     assert all((isinstance(step, int) for step in train_steps))
     assert all((0 <= step <= 10000 for step in train_steps))
+    assert isinstance(use_priors, bool)
     assert isinstance(skip_existing, bool)
 
     if out_rootpath.exists():
@@ -204,6 +245,8 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
     #
 
     prompts = Utils.Prompt.extract_from_file(filepath=prompt_filepath)
+    model_config = Utils.Prompt.extract_model_config_from_prompt_filepath(model, prompt_filepath)
+    model_config = model_config if model_config is not None else {}
 
     for prompt in prompts:
         if not isinstance(prompt, str) or len(prompt) < 2:
@@ -219,12 +262,17 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
         if skip_generation:
             continue
 
+        prompt_enc = Utils.Prompt.encode(prompt)
+        prompt_config = model_config.get(prompt_enc, model_config.get("*", None))
+
         try:
             _configure_and_run_model(
                 model=model,
                 prompt=prompt,
                 out_rootpath=out_rootpath,
                 train_steps=train_steps,
+                use_priors=use_priors,
+                prompt_config=prompt_config,
             )
         except Exception as e:
             print("")
@@ -232,7 +280,7 @@ def main(model: str, prompt_filepath: Path, out_rootpath: Path, train_steps: Lis
             print("========================================")
             print("Error while running model -> ", model)
             print("Error while running prompt -> ", prompt)
-            print(e)
+            print(''.join(traceback.format_exception(type(e), e, e.__traceback__)))
             print("========================================")
             print("")
             print("")
@@ -253,6 +301,7 @@ if __name__ == '__main__':
     parser.add_argument('--prompt-file', type=Path, required=True)
     parser.add_argument('--out-path', type=Path, required=True)
     parser.add_argument("--train-steps", type=str, required=True)
+    parser.add_argument("--use-priors", action="store_true", default=False)
     parser.add_argument("--skip-existing", action="store_true", default=False)
 
     args = parser.parse_args()
@@ -271,5 +320,6 @@ if __name__ == '__main__':
         prompt_filepath=args.prompt_file,
         out_rootpath=args.out_path,
         train_steps=arg_train_steps,
+        use_priors=args.use_priors,
         skip_existing=args.skip_existing,
     )

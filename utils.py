@@ -3,6 +3,7 @@ from typing import Tuple, List, Callable, Literal, Optional
 
 import os
 import torch
+import json
 
 from pathlib import Path
 from datetime import datetime
@@ -98,6 +99,21 @@ class _Prompt():
         prompts = list(prompts)
 
         return prompts
+
+    @staticmethod
+    def extract_model_config_from_prompt_filepath(model: str, prompt_filepath: Path) -> Optional[dict]:
+        assert isinstance(prompt_filepath, Path)
+        assert prompt_filepath.exists()
+        assert prompt_filepath.is_file()
+        assert prompt_filepath.suffix == ".txt"
+
+        model_config_filepath = prompt_filepath.parent.joinpath(f"{model}.json")
+
+        if not model_config_filepath.exists() or not model_config_filepath.is_file():
+            return None
+
+        with open(model_config_filepath, "r", encoding="utf-8") as f:
+            return json.load(f)
 
 
 ###
@@ -440,6 +456,7 @@ class _Models():
         prompt: str,
         out_rootpath: Path,
         train_steps: List[int],
+        prompt_config: Optional[dict] = None,
     ) -> List[Tuple[dict, list]]:
         assert len(train_steps) == 2
 
@@ -458,6 +475,39 @@ class _Models():
             f"trainer.max_steps={train_steps[0]}",
             "system.renderer.context_type=cuda",
         ]
+
+        #
+
+        if prompt_config is None:
+            ### default value
+            run_extra_args += ["sdf_bias=sphere", "sdf_bias_params=0.5"]
+        else:
+            assert "sdf_bias" in prompt_config
+            sdf_bias = prompt_config["sdf_bias"]
+            assert isinstance(sdf_bias, str)
+            assert sdf_bias in ["sphere", "ellipsoid"]
+            run_extra_args += [
+                f"sdf_bias={sdf_bias}",
+            ]
+            assert "sdf_bias_params" in prompt_config
+            sdf_bias_params = prompt_config["sdf_bias_params"]
+            if sdf_bias == "sphere":
+                assert isinstance(sdf_bias_params, float)
+                assert 0 <= sdf_bias_params <= 1
+                run_extra_args += [
+                    f"sdf_bias_params={str(sdf_bias_params)}",
+                ]
+            if sdf_bias == "ellipsoid":
+                assert isinstance(sdf_bias_params, list)
+                assert len(sdf_bias_params) == 3
+                assert all((isinstance(p, float) for p in sdf_bias_params))
+                assert all((0 <= p <= 1 for p in sdf_bias_params))
+                sdf_bias_params_str = ",".join(map(str, sdf_bias_params))
+                run_extra_args += [
+                    f'sdf_bias_params="{sdf_bias_params_str}"',
+                ]
+
+        #
 
         args_configs.append((run_args, run_extra_args))
 
@@ -641,6 +691,7 @@ class _Models():
         out_rootpath: Path,
         train_steps: List[int],
         mode: Literal["sd", "if"],
+        prompt_config: Optional[dict] = None,
     ) -> List[Tuple[dict, list]]:
         assert len(train_steps) == 1
         assert isinstance(mode, str)
