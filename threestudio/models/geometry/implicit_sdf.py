@@ -88,6 +88,12 @@ class ImplicitSDF(BaseImplicitGeometry):
 
         self.finite_difference_normal_eps: Optional[float] = None
 
+        ### INFO: @contimatteo custom fix.
+        if isinstance(self.cfg.sdf_bias_params, str):
+            self.cfg.sdf_bias_params = self.cfg.sdf_bias_params.strip()
+            self.cfg.sdf_bias_params = self.cfg.sdf_bias_params.split(",")
+            self.cfg.sdf_bias_params = [float(x) for x in self.cfg.sdf_bias_params]
+
     def initialize_shape(self) -> None:
         if self.cfg.shape_init is None and not self.cfg.force_shape_init:
             return
