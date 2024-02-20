@@ -58,7 +58,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 ### FANTASIA-3D
 ### 
 
-### TODO: need to add support for priors shape initialization
+### INFO: OK
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "fantasia3d" \
 #   --prompt-file $PROMPT_FILE \
