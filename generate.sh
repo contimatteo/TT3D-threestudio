@@ -63,7 +63,8 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --model "fantasia3d" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
-#   --train-steps="1800,1350" \
+#   --train-steps="1600,1350" \
+#   --use-priors \
 #   --skip-existing
 
 ### 
@@ -115,6 +116,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
 #   --train-steps="2500" \
+#   --use-priors \
 #   --skip-existing
 
 ### TODO: need to add support for priors shape initialization
@@ -123,6 +125,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
 #   --train-steps="3500" \
+#   --use-priors \
 #   --skip-existing
 
 ### 
