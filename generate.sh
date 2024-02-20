@@ -110,23 +110,31 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 ### TEXT-MESH
 ### 
 
-### TODO: need to add support for priors shape initialization
+### INFO: OK
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "textmesh-sd" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-#   --train-steps="2500" \
+#   --train-steps="2650" \
 #   --use-priors \
 #   --skip-existing
 
-### TODO: need to add support for priors shape initialization
+### INFO: OK
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "textmesh-if" \
 #   --prompt-file $PROMPT_FILE \
-#   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+#   --out-path "${OUT_DIR}/Threestudio-TextMesh-nopriors/" \
 #   --train-steps="3500" \
-#   --use-priors \
 #   --skip-existing
+
+### TODO: OOM error
+### CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+###   --model "textmesh-if" \
+###   --prompt-file $PROMPT_FILE \
+###   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
+###   --train-steps="3500" \
+###   --use-priors \
+###   --skip-existing
 
 ### 
 ### HIFA
