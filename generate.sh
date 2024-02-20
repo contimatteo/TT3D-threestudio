@@ -115,7 +115,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --model "textmesh-sd" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-TextMesh/" \
-#   --train-steps="2650" \
+#   --train-steps="2500" \
 #   --use-priors \
 #   --skip-existing
 
