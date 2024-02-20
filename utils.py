@@ -407,12 +407,15 @@ class _Storage():
 class _Models():
 
     @staticmethod
-    def _extract_args_from_priors(prompt_config: Optional[dict] = None) -> List[str]:
+    def _extract_args_from_priors(
+        prompt_config: Optional[dict] = None,
+        arg_prefix: str = "system.geometry",
+    ) -> List[str]:
         ### default value
         if prompt_config is None:
             return [
-                "system.geometry.sdf_bias=sphere",
-                "system.geometry.sdf_bias_params=0.5",
+                f"{arg_prefix}.sdf_bias=sphere",
+                f"{arg_prefix}.sdf_bias_params=0.5",
             ]
 
         #
@@ -428,7 +431,7 @@ class _Models():
         assert isinstance(sdf_bias, str)
         assert sdf_bias in ["sphere", "ellipsoid"]
         run_extra_args += [
-            f"system.geometry.sdf_bias={sdf_bias}",
+            f"{arg_prefix}.sdf_bias={sdf_bias}",
         ]
 
         ### sdf_bias_params
@@ -436,7 +439,7 @@ class _Models():
             assert isinstance(sdf_bias_params, float)
             assert 0 <= sdf_bias_params <= 1
             run_extra_args += [
-                f"system.geometry.sdf_bias_params={str(sdf_bias_params)}",
+                f"{arg_prefix}.sdf_bias_params={str(sdf_bias_params)}",
             ]
         ### sdf_bias_params
         if sdf_bias == "ellipsoid":
@@ -446,7 +449,7 @@ class _Models():
             assert all((0 <= p <= 1 for p in sdf_bias_params))
             sdf_bias_params_str = ",".join(map(str, sdf_bias_params))
             run_extra_args += [
-                f'system.geometry.sdf_bias_params="{sdf_bias_params_str}"',
+                f'{arg_prefix}.sdf_bias_params="{sdf_bias_params_str}"',
             ]
 
         return run_extra_args
