@@ -63,7 +63,7 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --model "fantasia3d" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
-#   --train-steps="1600,1250" \
+#   --train-steps="1500,1300" \
 #   --use-priors \
 #   --skip-existing
 
