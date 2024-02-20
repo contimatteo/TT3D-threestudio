@@ -1,0 +1,18 @@
+{
+  "A_cactus_with_pink_flowers": {
+    "sdf_bias": "sphere",
+    "sdf_bias_params": 0.9
+  },
+  "An_ivory_candlestick_holder": {
+    "sdf_bias": "ellipsoid",
+    "sdf_bias_params": [0.1, 0.9, 0.1]
+  },
+  "A_bright_red_fire_hydrant": {
+    "sdf_bias": "ellipsoid",
+    "sdf_bias_params": [0.3, 0.6, 0.3]
+  },
+  "An_antique_wooden_rocking_horse": {
+    "sdf_bias": "sphere",
+    "sdf_bias_params": 0.5
+  }
+}
