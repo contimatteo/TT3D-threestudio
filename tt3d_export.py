@@ -3,6 +3,8 @@ from typing import Optional, Tuple, List, Literal
 
 import argparse
 import os
+import torch
+import time
 
 from copy import deepcopy
 from pathlib import Path
@@ -144,6 +146,12 @@ def run_launch_script(run_args: dict, run_extra_args: List[str]) -> None:
         args=argparse.Namespace(**run_args),
         extras=run_extra_args,
     )
+
+    time.sleep(5)
+    import gc
+    torch.cuda.empty_cache()
+    gc.collect()
+    time.sleep(5)
 
 
 def main(

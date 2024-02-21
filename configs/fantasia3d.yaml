@@ -31,8 +31,8 @@ system:
     isosurface_coarse_to_fine: false
 
     # initialize SDF by optimization
-    shape_init: sphere
-    shape_init_params: 0.5
+    # shape_init: sphere
+    # shape_init_params: 0.5
 
     # or you can initialize SDF using a guide mesh
     # shape_init: mesh:load/shapes/human.obj
@@ -80,7 +80,7 @@ system:
   optimizer:
     name: AdamW
     args:
-      lr: 0.001
+      lr: 0.002
       betas: [0.9, 0.99]
       eps: 1.e-15
 

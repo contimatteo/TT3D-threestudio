@@ -11,6 +11,7 @@ PROMPT_FILE="${ROOT_DIR}/prompts/${PROMPT}.txt"
 
 # export TRANSFORMERS_OFFLINE=0
 # export HF_DATASETS_OFFLINE=0
+# export DIFFUSERS_OFFLINE=0
 # export HF_HUB_OFFLINE=0
 # # export HF_HOME="${ROOT_DIR}/cache/huggingface"
 export HF_HUB_DOWNLOAD_TIMEOUT=30
