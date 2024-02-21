@@ -1,15 +1,15 @@
 {
   "A_bent_steel_crowbar": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.1, 0.9, 0.1]
+    "sdf_bias_params": [0.2, 0.8, 0.2]
   },
   "A_blooming_potted_orchid_with_purple_flowers": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.5, 0.5, 0.1]
+    "sdf_bias_params": [0.7, 0.7, 0.3]
   },
   "A_bright,_yellow_rubber_duck": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.7, 0.5, 0.3]
+    "sdf_bias_params": [0.4, 0.6, 0.4]
   },
   "A_bright_blue_plastic_swimming_goggles": {
     "sdf_bias": "ellipsoid",
@@ -17,7 +17,7 @@
   },
   "A_bright_red_fire_hydrant": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.3, 0.9, 0.3]
+    "sdf_bias_params": [0.3, 0.6, 0.3]
   },
   "A_bright_red_kite_with_a_frayed_tail": {
     "sdf_bias": "ellipsoid",
@@ -25,7 +25,7 @@
   },
   "A_cactus_with_pink_flowers": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.4, 0.8, 0.4]
+    "sdf_bias_params": [0.4, 0.6, 0.4]
   },
   "A_castle-shaped_sandcastle": {
     "sdf_bias": "ellipsoid",
@@ -45,11 +45,11 @@
   },
   "A_chipped,_white_coffee_mug": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.5, 0.8, 0.5]
+    "sdf_bias_params": [0.4, 0.6, 0.4]
   },
   "A_chipped_porcelain_teacup": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.5, 0.6, 0.5]
+    "sdf_bias_params": [0.5, 0.4, 0.5]
   },
   "A_classic_leatherette_radio_with_dials": {
     "sdf_bias": "ellipsoid",
@@ -385,7 +385,7 @@
   },
   "An_ivory_candlestick_holder": {
     "sdf_bias": "ellipsoid",
-    "sdf_bias_params": [0.1, 0.9, 0.1]
+    "sdf_bias_params": [0.3, 0.6, 0.3]
   },
   "An_old,_frayed_straw_hat": {
     "sdf_bias": "ellipsoid",
