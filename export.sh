@@ -39,7 +39,7 @@ export HF_HUB_OFFLINE=1
 
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 #   --model "fantasia3d" \
-#   --source-path "${OUT_DIR}/Threestudio-Fantasia3D/" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-Fantasia3D/" \
 #   --skip-existing
 
 ### 
