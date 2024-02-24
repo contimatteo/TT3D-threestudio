@@ -108,6 +108,14 @@ def _export(
         run_extra_args += [
             "system.geometry.isosurface_threshold=auto",
         ]
+    elif model == "sjc":
+        run_extra_args += [
+            "system.geometry.isosurface_threshold=auto",
+        ]
+    elif model == "latentnerf":
+        run_extra_args += [
+            "system.geometry.isosurface_threshold=auto",
+        ]
     else:
         ### just for safety ...
         raise Exception("Model custom run arguments not configured.")
