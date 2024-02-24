@@ -11,3 +11,4 @@ pip install "git+https://github.com/NVlabs/nvdiffrast.git"
 # export LD_LIBRARY_PATH="/usr/local/cuda-11.8/lib64:$LD_LIBRARY_PATH"
 pip install -v "git+https://github.com/NVlabs/tiny-cuda-nn/#subdirectory=bindings/torch"
 pip install mediapipe
+pip install open3d
