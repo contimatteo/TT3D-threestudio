@@ -872,7 +872,6 @@ class _Models():
             f"exp_root_dir={str(out_rootpath)}",
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps[0]}",
-            # "system.renderer.context_type=cuda",
         ]
 
         #
@@ -898,7 +897,6 @@ class _Models():
             f"system.prompt_processor.prompt={prompt}",
             f"trainer.max_steps={train_steps[1]}",
             f"system.weights={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
-            "system.renderer.context_type=cuda",
         ]
 
         args_configs.append((run_args, run_extra_args))
