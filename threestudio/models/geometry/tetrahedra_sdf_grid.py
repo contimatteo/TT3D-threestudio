@@ -234,11 +234,11 @@ class TetrahedraSDFGrid(BaseExplicitGeometry):
         for param in self.parameters():
             broadcast(param, src=0)
 
-    def isosurface(self) -> Mesh:
+    def isosurface(self, export=False) -> Mesh:
         # return cached mesh if fix_geometry is True to save computation
-        if self.cfg.fix_geometry and self.mesh is not None:
+        if self.cfg.fix_geometry and self.mesh is not None and not export:
             return self.mesh
-        mesh = self.isosurface_helper(self.sdf, self.deformation)
+        mesh = self.isosurface_helper(self.sdf, self.deformation, export=export)
         mesh.v_pos = scale_tensor(
             mesh.v_pos, self.isosurface_helper.points_range, self.isosurface_bbox
         )
@@ -329,7 +329,7 @@ class TetrahedraSDFGrid(BaseExplicitGeometry):
                 threestudio.warn(
                     f"Override isosurface_resolution of the source geometry to {instance.cfg.isosurface_resolution}"
                 )
-            mesh = other.isosurface()
+            mesh = other.isosurface(export=True)
             instance.isosurface_bbox = mesh.extras["bbox"]
             instance.sdf.data = mesh.extras["grid_level"].to(instance.sdf.data)
             if (

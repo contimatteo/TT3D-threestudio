@@ -24,7 +24,7 @@ class NVDiffRasterizerContext:
     ) -> Float[Tensor, "B Nv 4"]:
         verts_homo = torch.cat(
             [verts, torch.ones([verts.shape[0], 1]).to(verts)], dim=-1
-        )
+        ).float()
         return torch.matmul(verts_homo, mvp_mtx.permute(0, 2, 1))
 
     def rasterize(

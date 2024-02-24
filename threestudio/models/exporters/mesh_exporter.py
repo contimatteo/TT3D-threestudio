@@ -36,12 +36,14 @@ class MeshExporter(Exporter):
         geometry: BaseImplicitGeometry,
         material: BaseMaterial,
         background: BaseBackground,
+        guidance=None,
     ) -> None:
         super().configure(geometry, material, background)
         self.ctx = NVDiffRasterizerContext(self.cfg.context_type, self.device)
+        self.guidance = guidance
 
     def __call__(self) -> List[ExporterOutput]:
-        mesh: Mesh = self.geometry.isosurface()
+        mesh: Mesh = self.geometry.isosurface(export=True)
 
         if self.cfg.fmt == "obj-mtl":
             return self.export_obj_with_mtl(mesh)
@@ -50,7 +52,7 @@ class MeshExporter(Exporter):
         else:
             raise ValueError(f"Unsupported mesh export format: {self.cfg.fmt}")
 
-    def export_obj_with_mtl(self, mesh: Mesh) -> List[ExporterOutput]:
+    def export_obj_with_mtl(self, mesh: Mesh, guidance=None) -> List[ExporterOutput]:
         params = {
             "mesh": mesh,
             "save_mat": True,
@@ -111,7 +113,7 @@ class MeshExporter(Exporter):
 
             # Sample out textures from MLP
             geo_out = self.geometry.export(points=gb_pos)
-            mat_out = self.material.export(points=gb_pos, **geo_out)
+            mat_out = self.material.export(points=gb_pos, guidance=self.guidance, **geo_out)
 
             threestudio.info(
                 "Perform UV padding on texture maps to avoid seams, may take a while ..."

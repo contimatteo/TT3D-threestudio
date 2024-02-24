@@ -40,3 +40,12 @@ class StableDiffusionLatentAdapterMaterial(BaseMaterial):
         color = (color + 1) / 2
         color = color.clamp(0.0, 1.0)
         return color
+    
+    def export(self, features: Float[Tensor, "*N 4"], **kwargs) -> Dict[str, Any]:
+        color = self(features, **kwargs).clamp(0, 1)
+        assert color.shape[-1] >= 3, "Output color must have at least 3 channels"
+        if color.shape[-1] > 3:
+            threestudio.warn(
+                "Output color has >3 channels, treating the first 3 as RGB"
+            )
+        return {"albedo": color[..., :3]}
