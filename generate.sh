@@ -147,3 +147,29 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 #   --out-path "${OUT_DIR}/Threestudio-HiFA/" \
 #   --train-steps="2650" \
 #   --skip-existing
+
+### 
+### SJC
+### 
+
+### INFO: OK
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "sjc" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-SJC/" \
+#   --train-steps="10000" \
+#   --use-priors \
+#   --skip-existing
+
+### 
+### LATENT-NERF
+### 
+
+### INFO: OK
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "latentnerf" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-LatentNerf/" \
+#   --train-steps="1900,1300" \
+#   --use-priors \
+#   --skip-existing

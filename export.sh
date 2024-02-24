@@ -92,3 +92,21 @@ export HF_HUB_OFFLINE=1
 #   --model "hifa" \
 #   --source-path "${OUT_DIR}/Threestudio-HiFA/" \
 #   --skip-existing
+
+### 
+### SJC
+### 
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "sjc" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-SJC/" \
+#   --skip-existing
+
+### 
+### LATENT-NERF
+### 
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "latentnerf" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-LatentNerf/" \
+#   --skip-existing
