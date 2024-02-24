@@ -132,7 +132,7 @@ class Mesh:
         return self._edges
 
     def _compute_vertex_normal(self):
-        self.t_pos_idx = self.t_pos_idx.long()
+        # self.t_pos_idx = self.t_pos_idx.long()
         i0 = self.t_pos_idx[:, 0]
         i1 = self.t_pos_idx[:, 1]
         i2 = self.t_pos_idx[:, 2]
