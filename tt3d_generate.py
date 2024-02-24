@@ -169,6 +169,22 @@ def _configure_and_run_model(
             train_steps=train_steps,
         )
 
+    if model == "sjc":
+        args_configs = Utils.Models.sjc(
+            args_builder_fn=_build_default_args,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+        )
+
+    if model == "latentnerf":
+        args_configs = Utils.Models.latentnerf(
+            args_builder_fn=_build_default_args,
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            train_steps=train_steps,
+        )
+
     if args_configs is None:
         raise Exception("Model is supported but still not implemented.")
 

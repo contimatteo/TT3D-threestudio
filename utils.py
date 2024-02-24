@@ -131,6 +131,8 @@ class _Configs():
         "textmesh-sd",
         "textmesh-if",
         "hifa",
+        "sjc",
+        "latentnerf",
     ]
 
     # @classmethod
@@ -254,6 +256,12 @@ class _Storage():
         if model == "hifa":
             return "hifa"
 
+        if model == "sjc":
+            return "sjc"
+
+        if model == "latentnerf":
+            return "latentnerf-refine"
+
         raise Exception("Model output final dirname not configured.")
 
     @staticmethod
@@ -281,6 +289,12 @@ class _Storage():
 
         if model == "hifa":
             return []
+
+        if model == "sjc":
+            return []
+
+        if model == "latentnerf":
+            return ["latentnerf"]
 
         raise Exception("Model output intermediate dirnames not configured.")
 
@@ -797,6 +811,94 @@ class _Models():
             "data.width=64",  ### TODO: prefers memory optimization over quality
             "data.height=64",  ### TODO: prefers memory optimization over quality
             "data.batch_size=1",  ### TODO: prefers memory optimization over quality
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def sjc(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: List[int],
+    ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 1
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/sjc.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps[0]}",
+        ]
+
+        args_configs.append((run_args, run_extra_args))
+
+        ###
+
+        return args_configs
+
+    @staticmethod
+    def latentnerf(
+        args_builder_fn: Callable[[], Tuple[dict, list]],
+        prompt: str,
+        out_rootpath: Path,
+        train_steps: List[int],
+        prompt_config: Optional[dict] = None,
+    ) -> List[Tuple[dict, list]]:
+        assert len(train_steps) == 2
+
+        args_configs: List[Tuple[dict, list]] = []
+
+        ###
+        ### STEP #1
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/latentnerf.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps[0]}",
+            "system.renderer.context_type=cuda",
+        ]
+
+        #
+
+        args_configs.append((run_args, run_extra_args))
+
+        result_path = _Storage.build_result_path_by_prompt(
+            model_dirname="latentnerf",
+            prompt=prompt,
+            out_rootpath=out_rootpath,
+            assert_exists=False,
+        )
+
+        ###
+        ### STEP #2
+        ###
+
+        run_args, run_extra_args = args_builder_fn()
+
+        run_args["config"] = "configs/latentnerf-refine.yaml"
+        run_extra_args += [
+            f"exp_root_dir={str(out_rootpath)}",
+            f"system.prompt_processor.prompt={prompt}",
+            f"trainer.max_steps={train_steps[1]}",
+            f"system.weights={str(result_path.joinpath('ckpts', 'last.ckpt'))}",
+            "system.renderer.context_type=cuda",
         ]
 
         args_configs.append((run_args, run_extra_args))
