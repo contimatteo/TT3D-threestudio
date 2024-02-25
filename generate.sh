@@ -121,6 +121,14 @@ CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_embeddings.py \
 
 ### INFO: OK
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
+#   --model "textmesh-sd" \
+#   --prompt-file $PROMPT_FILE \
+#   --out-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-TextMesh-nopriors/" \
+#   --train-steps="2500" \
+#   --skip-existing
+
+### INFO: OK
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_generate.py \
 #   --model "textmesh-if" \
 #   --prompt-file $PROMPT_FILE \
 #   --out-path "${OUT_DIR}/Threestudio-TextMesh-nopriors/" \
