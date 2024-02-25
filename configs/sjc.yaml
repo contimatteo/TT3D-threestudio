@@ -75,7 +75,9 @@ system:
       geometry:
         lr: 0.05
       background:
-        lr: 0.0001 # maybe 0.001/0.01 is better
+        # lr: 0.0001 # maybe 0.001/0.01 is better
+        # lr: 0.001 # maybe 0.001/0.01 is better
+        lr: 0.01 # maybe 0.001/0.01 is better
 
 trainer:
   max_steps: 10000

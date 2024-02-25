@@ -7,6 +7,8 @@ import threestudio
 from threestudio.models.mesh import Mesh
 from threestudio.utils.typing import *
 
+import open3d as o3d
+
 
 class IsosurfaceHelper(nn.Module):
     points_range: Tuple[float, float] = (0, 1)
@@ -49,6 +51,7 @@ class MarchingCubeCPUHelper(IsosurfaceHelper):
         self,
         level: Float[Tensor, "N3 1"],
         deformation: Optional[Float[Tensor, "N3 3"]] = None,
+        export: bool = False,
     ) -> Mesh:
         if deformation is not None:
             threestudio.warn(
@@ -58,6 +61,18 @@ class MarchingCubeCPUHelper(IsosurfaceHelper):
         v_pos, t_pos_idx = self.mc_func(
             level.detach().cpu().numpy(), 0.0
         )  # transform to numpy
+
+        if export:
+            # build open3d mesh by v_pos, t_pos_idx
+            m = o3d.geometry.TriangleMesh()
+            m.vertices = o3d.utility.Vector3dVector(v_pos)
+            m.triangles = o3d.utility.Vector3iVector(t_pos_idx)
+
+            if len(m.triangles) > 40000:
+                simplified = m.simplify_quadric_decimation(target_number_of_triangles=40000)
+                v_pos = np.asarray(simplified.vertices)
+                t_pos_idx = np.asarray(simplified.triangles)
+
         v_pos, t_pos_idx = (
             torch.from_numpy(v_pos).float().to(self._dummy.device),
             torch.from_numpy(t_pos_idx.astype(np.int64)).long().to(self._dummy.device),
@@ -230,6 +245,7 @@ class MarchingTetrahedraHelper(IsosurfaceHelper):
         self,
         level: Float[Tensor, "N3 1"],
         deformation: Optional[Float[Tensor, "N3 3"]] = None,
+        export: bool = False,
     ) -> Mesh:
         if deformation is not None:
             grid_vertices = self.grid_vertices + self.normalize_grid_deformation(
@@ -239,6 +255,18 @@ class MarchingTetrahedraHelper(IsosurfaceHelper):
             grid_vertices = self.grid_vertices
 
         v_pos, t_pos_idx = self._forward(grid_vertices, level, self.indices)
+        device = v_pos.device
+
+        if export:
+            # build open3d mesh by v_pos, t_pos_idx
+            m = o3d.geometry.TriangleMesh()
+            m.vertices = o3d.utility.Vector3dVector(v_pos.detach().cpu())
+            m.triangles = o3d.utility.Vector3iVector(t_pos_idx.detach().cpu())
+
+            if len(m.triangles) > 40000:
+                simplified = m.simplify_quadric_decimation(target_number_of_triangles=40000)
+                v_pos = torch.tensor(simplified.vertices, device=device, dtype=torch.float32)
+                t_pos_idx = torch.tensor(simplified.triangles, device=device)
 
         mesh = Mesh(
             v_pos=v_pos,

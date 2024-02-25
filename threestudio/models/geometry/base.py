@@ -116,7 +116,7 @@ class BaseImplicitGeometry(BaseGeometry):
         # return the value of the implicit field, where the zero level set represents the surface
         raise NotImplementedError
 
-    def _isosurface(self, bbox: Float[Tensor, "2 3"], fine_stage: bool = False) -> Mesh:
+    def _isosurface(self, bbox: Float[Tensor, "2 3"], fine_stage: bool = False, export: bool = False) -> Mesh:
         def batch_func(x):
             # scale to bbox as the input vertices are in [0, 1]
             field, deformation = self.forward_field(
@@ -155,7 +155,7 @@ class BaseImplicitGeometry(BaseGeometry):
             )
 
         level = self.forward_level(field, threshold)
-        mesh: Mesh = self.isosurface_helper(level, deformation=deformation)
+        mesh: Mesh = self.isosurface_helper(level, deformation=deformation, export=export)
         mesh.v_pos = scale_tensor(
             mesh.v_pos, self.isosurface_helper.points_range, bbox
         )  # scale to bbox as the grid vertices are in [0, 1]
@@ -168,7 +168,7 @@ class BaseImplicitGeometry(BaseGeometry):
 
         return mesh
 
-    def isosurface(self) -> Mesh:
+    def isosurface(self, export=False) -> Mesh:
         if not self.cfg.isosurface:
             raise NotImplementedError(
                 "Isosurface is not enabled in the current configuration"
@@ -177,14 +177,14 @@ class BaseImplicitGeometry(BaseGeometry):
         if self.cfg.isosurface_coarse_to_fine:
             threestudio.debug("First run isosurface to get a tight bounding box ...")
             with torch.no_grad():
-                mesh_coarse = self._isosurface(self.bbox)
+                mesh_coarse = self._isosurface(self.bbox, export=export)
             vmin, vmax = mesh_coarse.v_pos.amin(dim=0), mesh_coarse.v_pos.amax(dim=0)
             vmin_ = (vmin - (vmax - vmin) * 0.1).max(self.bbox[0])
             vmax_ = (vmax + (vmax - vmin) * 0.1).min(self.bbox[1])
             threestudio.debug("Run isosurface again with the tight bounding box ...")
-            mesh = self._isosurface(torch.stack([vmin_, vmax_], dim=0), fine_stage=True)
+            mesh = self._isosurface(torch.stack([vmin_, vmax_], dim=0), fine_stage=True, export=export)
         else:
-            mesh = self._isosurface(self.bbox)
+            mesh = self._isosurface(self.bbox, export=export)
         return mesh
 
 

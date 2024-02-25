@@ -198,3 +198,12 @@ class ScoreJacobianChaining(BaseLift3DSystem):
             name="test",
             step=self.true_global_step,
         )
+
+    def on_predict_start(self) -> None:
+        self.exporter: Exporter = threestudio.find(self.cfg.exporter_type)(
+            self.cfg.exporter,
+            geometry=self.geometry,
+            material=self.material,
+            background=self.background,
+            guidance=self.guidance,
+        )

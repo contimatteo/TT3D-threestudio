@@ -71,7 +71,12 @@ export HF_HUB_OFFLINE=1
 
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 #   --model "textmesh-sd" \
-#   --source-path "${OUT_DIR}/Threestudio-TextMesh/" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-TextMesh/" \
+#   --skip-existing
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "textmesh-sd" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-TextMesh-nopriors/" \
 #   --skip-existing
 
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
@@ -81,7 +86,7 @@ export HF_HUB_OFFLINE=1
 
 ### CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 ###   --model "textmesh-if" \
-###   --source-path "${OUT_DIR}/Threestudio-TextMesh/" \
+###   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-TextMesh/" \
 ###   --skip-existing
 
 ### 
@@ -91,4 +96,22 @@ export HF_HUB_OFFLINE=1
 # CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
 #   --model "hifa" \
 #   --source-path "${OUT_DIR}/Threestudio-HiFA/" \
+#   --skip-existing
+
+### 
+### SJC
+### 
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "sjc" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-SJC/" \
+#   --skip-existing
+
+### 
+### LATENT-NERF
+### 
+
+# CUDA_VISIBLE_DEVICES=${GPU} python3 tt3d_export.py \
+#   --model "latentnerf" \
+#   --source-path "/media/data3/mconti/TT3D/outputs/${ENV}/${EXPERIMENT_PREFIX}/${PROMPT}/Threestudio-LatentNerf/" \
 #   --skip-existing
